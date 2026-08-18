@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Temple Admin Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        body{
+            margin:0;
+            font-family:Arial,sans-serif;
+            background:#f4f4f4;
+        }
+
+        nav{
+            background:#8B0000;
+            color:white;
+            padding:20px;
+            text-align:center;
+        }
+
+        .container{
+            padding:30px;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            margin-bottom:20px;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,0.2);
+        }
+
+        button{
+            padding:10px 20px;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        table{
+            background:white;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<nav>
+
+    <h2>🛕 Jai Baba Dihbar Temple Dashboard</h2>
+
+</nav>
+
+<div class="container">
+
+    <button onclick="logout()">
+        Logout
+    </button>
+
+    <div class="card">
+
+        <h2>Total Donations</h2>
+
+        <h1 id="totalDonation">₹0</h1>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Total Donors</h2>
+
+        <h1 id="totalDonor">0</h1>
+
+    </div>
+
+    <input
+        type="text"
+        id="search"
+        placeholder="Search donor">
+
+    <br><br>
+
+    <input type="date" id="filterDate">
+
+    <button onclick="filterByDate()">
+        Filter
+    </button>
+
+    <button onclick="loadDonations()">
+        Show All
+    </button>
+
+    <button onclick="exportPDF()">
+        📄 Export PDF
+    </button>
+
+    <br><br>
+
+    <table border="1" width="100%">
+
+        <thead>
+
+            <tr>
+
+                <th>Name</th>
+
+                <th>Mobile</th>
+
+                <th>Amount</th>
+
+                <th>Date</th>
+
+                <th>Delete</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="donationTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<script src="dashboard.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+<script type="module">
+
+import { auth } from "./firebase.js";
+
+import {
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+window.logout = function () {
+
+    signOut(auth)
+
+    .then(() => {
+
+        alert("Logout successful");
+
+        window.location.href = "admin-login.html";
+
+    })
+
+    .catch((error) => {
+
+        alert(error.message);
+
+    });
+};
+
+</script>
+
+</body>
+
+</html>

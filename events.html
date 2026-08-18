@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temple Events</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="container navbar">
+            <div class="logo">🛕 Jai Baba Dihbar</div>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html" id="navHome">होम</a></li>
+                    <li><a href="index.html#about" id="navAbout">हमारे बारे में</a></li>
+                    <li><a href="events.html" id="navEvents">कार्यक्रम</a></li>
+                    <li><a href="index.html#gallery" id="navGallery">गैलरी</a></li>
+                    <li><a href="index.html#donation" id="navDonate">दान करें</a></li>
+                    <li><a href="index.html#contact" id="navContact">संपर्क</a></li>
+                    <li><a href="admin-login.html" id="navAdmin">एडमिन लॉगिन</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <select id="language" aria-label="Language">
+                    <option value="en">English</option>
+                    <option value="hi" selected>हिन्दी</option>
+                </select>
+                <button id="themeToggle" class="icon-button theme-toggle" type="button" aria-label="Toggle dark mode">🌙</button>
+                <button class="icon-button" type="button" onclick="window.location.href='admin-dashboard.html'">डैशबोर्ड</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="event-page-hero">
+            <div class="container">
+                <span class="section-tag light" id="eventHeroBadge">मंदिर कैलेंडर</span>
+                <h1 id="eventPageTitle">आगामी कार्यक्रम और आध्यात्मिक उत्सव</h1>
+                <p id="eventPageText">सामुदायिक प्रसाद, भक्ति सभा और पारंपरिक उत्सवों में शामिल हों, जो शांति, आस्था और एकता को बढ़ाते हैं।</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="event-list">
+                    <article class="event-item">
+                        <img src="images/temple.jpg" alt="Temple aarti" />
+                        <div class="event-info">
+                            <span>Daily Ritual</span>
+                            <h3>Morning Aarti</h3>
+                            <p>Begin your day with sacred chants, divine blessings, and a peaceful atmosphere of devotion.</p>
+                            <div class="event-meta">
+                                <span>Every day</span>
+                                <span>5:00 AM</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-item">
+                        <img src="images/temple2.jpg" alt="Temple festival" />
+                        <div class="event-info">
+                            <span>Festival</span>
+                            <h3>Diwali Celebration</h3>
+                            <p>Celebrate the festival of lights with diya offerings, prayers, cultural programs, and community joy.</p>
+                            <div class="event-meta">
+                                <span>08 Nov</span>
+                                <span>6:30 PM</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-item">
+                        <img src="images/temple.jpg" alt="Temple pooja" />
+                        <div class="event-info">
+                            <span>Pooja</span>
+                            <h3>Chhath Puja</h3>
+                            <p>Take part in this revered ritual with prayers, offerings, and a deeply spiritual collective experience.</p>
+                            <div class="event-meta">
+                                <span>15 Nov</span>
+                                <span>Sunrise</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-item">
+                        <img src="images/temple2.jpg" alt="Temple bhajan" />
+                        <div class="event-info">
+                            <span>Bhajan</span>
+                            <h3>Evening Kirtan</h3>
+                            <p>Spend a peaceful evening with devotional singing, spiritual reflection, and shared blessings.</p>
+                            <div class="event-meta">
+                                <span>Every Sunday</span>
+                                <span>7:00 PM</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-item">
+                        <img src="images/temple.jpg" alt="Mahashivratri" />
+                        <div class="event-info">
+                            <span>Spiritual Night</span>
+                            <h3>Mahashivratri</h3>
+                            <p>Observe the divine night of Shiva with fasting, chanting, abhishek, and midnight prayer.</p>
+                            <div class="event-meta">
+                                <span>06 Feb</span>
+                                <span>Night</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-item">
+                        <img src="images/temple2.jpg" alt="Temple seva" />
+                        <div class="event-info">
+                            <span>Seva</span>
+                            <h3>Community Prasad</h3>
+                            <p>Enjoy the blessings of seva through prasad distribution, food service, and volunteer care.</p>
+                            <div class="event-meta">
+                                <span>Monthly</span>
+                                <span>11:00 AM</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>© 2026 Jai Baba Dihbar Temple. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
