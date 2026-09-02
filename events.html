@@ -1,137 +1,1103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Temple Events</title>
-    <link rel="stylesheet" href="style.css" />
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Temple of Turki - Events</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
 </head>
+
+
 <body>
-    <header class="site-header">
-        <div class="container navbar">
-            <div class="logo">🛕 Jai Baba Dihbar</div>
 
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="index.html" id="navHome">होम</a></li>
-                    <li><a href="index.html#about" id="navAbout">हमारे बारे में</a></li>
-                    <li><a href="events.html" id="navEvents">कार्यक्रम</a></li>
-                    <li><a href="index.html#gallery" id="navGallery">गैलरी</a></li>
-                    <li><a href="index.html#donation" id="navDonate">दान करें</a></li>
-                    <li><a href="index.html#contact" id="navContact">संपर्क</a></li>
-                    <li><a href="admin-login.html" id="navAdmin">एडमिन लॉगिन</a></li>
-                </ul>
-            </nav>
 
-            <div class="nav-actions">
-                <select id="language" aria-label="Language">
-                    <option value="en">English</option>
-                    <option value="hi" selected>हिन्दी</option>
-                </select>
-                <button id="themeToggle" class="icon-button theme-toggle" type="button" aria-label="Toggle dark mode">🌙</button>
-                <button class="icon-button" type="button" onclick="window.location.href='admin-dashboard.html'">डैशबोर्ड</button>
-            </div>
+<!-- ================= HEADER ================= -->
+
+<header class="site-header">
+
+    <div class="container navbar">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+            TOT - Temple of Turki
         </div>
-    </header>
 
-    <main>
-        <section class="event-page-hero">
-            <div class="container">
-                <span class="section-tag light" id="eventHeroBadge">मंदिर कैलेंडर</span>
-                <h1 id="eventPageTitle">आगामी कार्यक्रम और आध्यात्मिक उत्सव</h1>
-                <p id="eventPageText">सामुदायिक प्रसाद, भक्ति सभा और पारंपरिक उत्सवों में शामिल हों, जो शांति, आस्था और एकता को बढ़ाते हैं।</p>
+
+        <!-- MOBILE MENU -->
+
+        <button
+            class="mobile-menu-button"
+            id="mobileMenuButton"
+            type="button"
+            aria-label="Open Menu">
+
+            ☰
+
+        </button>
+
+
+        <!-- NAVIGATION -->
+
+        <nav id="mainNav">
+
+            <ul class="nav-links">
+
+                <li>
+                    <a
+                        href="index.html"
+                        id="navHome">
+                        Home
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="index.html#about"
+                        id="navAbout">
+                        About Us
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="events.html"
+                        id="navEvents">
+                        Events
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="index.html#gallery"
+                        id="navGallery">
+                        Gallery
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="index.html#notice"
+                        id="navNotice">
+                        Notice
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="index.html#donation"
+                        id="navDonate">
+                        Donation
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="index.html#contact"
+                        id="navContact">
+                        Contact
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="admin-login.html"
+                        id="navAdmin">
+                        Admin Login
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="user-login.html"
+                        id="authLink">
+                        User Login
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+
+        <!-- NAV ACTIONS -->
+
+        <div class="nav-actions">
+
+
+            <!-- LANGUAGE -->
+
+            <select
+                id="language"
+                aria-label="Language">
+
+                <option value="en" selected>
+                    English
+                </option>
+
+                <option value="hi">
+                    हिन्दी
+                </option>
+
+            </select>
+
+
+            <!-- DARK MODE -->
+
+            <button
+                id="themeToggle"
+                class="icon-button theme-toggle"
+                type="button"
+                aria-label="Toggle dark mode">
+
+                Dark Mode
+
+            </button>
+
+
+            <!-- DASHBOARD -->
+
+            <button
+                class="icon-button"
+                type="button"
+                onclick="window.location.href='admin-dashboard.html'">
+
+                Dashboard
+
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<main>
+
+
+    <!-- EVENT HERO -->
+
+    <section class="event-page-hero">
+
+        <div class="container">
+
+            <span
+                class="section-tag light"
+                id="eventHeroBadge">
+
+                Temple Calendar
+
+            </span>
+
+
+            <h1 id="eventPageTitle">
+
+                Upcoming Events & Spiritual Celebrations
+
+            </h1>
+
+
+            <p id="eventPageText">
+
+                Join community prayers, devotional gatherings,
+                and traditional celebrations that bring peace,
+                faith, and unity.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= EVENTS ================= -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="event-list">
+
+
+                <!-- EVENT 1 -->
+
+                <article class="event-item">
+
+                    <img
+                        src="images/temple.jpg"
+                        alt="Temple Morning Aarti">
+
+
+                    <div class="event-info">
+
+                        <span id="event1Tag">
+                            Daily Ritual
+                        </span>
+
+
+                        <h3 id="event1Title">
+                            Morning Aarti
+                        </h3>
+
+
+                        <p id="event1Text">
+
+                            Begin your day with sacred chants,
+                            divine blessings, and a peaceful
+                            atmosphere of devotion.
+
+                        </p>
+
+
+                        <div class="event-meta">
+
+                            <span id="event1Date">
+                                Every Day
+                            </span>
+
+                            <span id="event1Time">
+                                5:00 AM
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- EVENT 2 -->
+
+                <article class="event-item">
+
+                    <img
+                        src="images/temple2.jpg"
+                        alt="Diwali Celebration">
+
+
+                    <div class="event-info">
+
+                        <span id="event2Tag">
+                            Festival
+                        </span>
+
+
+                        <h3 id="event2Title">
+                            Diwali Celebration
+                        </h3>
+
+
+                        <p id="event2Text">
+
+                            Celebrate the festival of lights
+                            with diya offerings, prayers,
+                            cultural programs, and community joy.
+
+                        </p>
+
+
+                        <div class="event-meta">
+
+                            <span id="event2Date">
+                                08 Nov
+                            </span>
+
+                            <span id="event2Time">
+                                6:30 PM
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- EVENT 3 -->
+
+                <article class="event-item">
+
+                    <img
+                        src="images/temple.jpg"
+                        alt="Chhath Puja">
+
+
+                    <div class="event-info">
+
+                        <span id="event3Tag">
+                            Pooja
+                        </span>
+
+
+                        <h3 id="event3Title">
+                            Chhath Puja
+                        </h3>
+
+
+                        <p id="event3Text">
+
+                            Take part in this revered ritual
+                            with prayers, offerings, and a
+                            deeply spiritual collective experience.
+
+                        </p>
+
+
+                        <div class="event-meta">
+
+                            <span id="event3Date">
+                                15 Nov
+                            </span>
+
+                            <span id="event3Time">
+                                Sunrise
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- EVENT 4 -->
+
+                <article class="event-item">
+
+                    <img
+                        src="images/temple2.jpg"
+                        alt="Evening Kirtan">
+
+
+                    <div class="event-info">
+
+                        <span id="event4Tag">
+                            Bhajan
+                        </span>
+
+
+                        <h3 id="event4Title">
+                            Evening Kirtan
+                        </h3>
+
+
+                        <p id="event4Text">
+
+                            Spend a peaceful evening with
+                            devotional singing, spiritual
+                            reflection, and shared blessings.
+
+                        </p>
+
+
+                        <div class="event-meta">
+
+                            <span id="event4Date">
+                                Every Sunday
+                            </span>
+
+                            <span id="event4Time">
+                                7:00 PM
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- EVENT 5 -->
+
+                <article class="event-item">
+
+                    <img
+                        src="images/temple.jpg"
+                        alt="Mahashivratri Celebration">
+
+
+                    <div class="event-info">
+
+                        <span id="event5Tag">
+                            Spiritual Night
+                        </span>
+
+
+                        <h3 id="event5Title">
+                            Mahashivratri
+                        </h3>
+
+
+                        <p id="event5Text">
+
+                            Observe the divine night of Shiva
+                            with fasting, chanting, abhishek,
+                            and midnight prayer.
+
+                        </p>
+
+
+                        <div class="event-meta">
+
+                            <span id="event5Date">
+                                06 Feb
+                            </span>
+
+                            <span id="event5Time">
+                                Night
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- EVENT 6 -->
+
+                <article class="event-item">
+
+                    <img
+                        src="images/temple2.jpg"
+                        alt="Community Seva">
+
+
+                    <div class="event-info">
+
+                        <span id="event6Tag">
+                            Seva
+                        </span>
+
+
+                        <h3 id="event6Title">
+                            Community Prasad
+                        </h3>
+
+
+                        <p id="event6Text">
+
+                            Experience the blessings of seva
+                            through prasad distribution, food
+                            service, and volunteer care.
+
+                        </p>
+
+
+                        <div class="event-meta">
+
+                            <span id="event6Date">
+                                Monthly
+                            </span>
+
+                            <span id="event6Time">
+                                11:00 AM
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
             </div>
-        </section>
 
-        <section class="section">
-            <div class="container">
-                <div class="event-list">
-                    <article class="event-item">
-                        <img src="images/temple.jpg" alt="Temple aarti" />
-                        <div class="event-info">
-                            <span>Daily Ritual</span>
-                            <h3>Morning Aarti</h3>
-                            <p>Begin your day with sacred chants, divine blessings, and a peaceful atmosphere of devotion.</p>
-                            <div class="event-meta">
-                                <span>Every day</span>
-                                <span>5:00 AM</span>
-                            </div>
-                        </div>
-                    </article>
+        </div>
 
-                    <article class="event-item">
-                        <img src="images/temple2.jpg" alt="Temple festival" />
-                        <div class="event-info">
-                            <span>Festival</span>
-                            <h3>Diwali Celebration</h3>
-                            <p>Celebrate the festival of lights with diya offerings, prayers, cultural programs, and community joy.</p>
-                            <div class="event-meta">
-                                <span>08 Nov</span>
-                                <span>6:30 PM</span>
-                            </div>
-                        </div>
-                    </article>
+    </section>
 
-                    <article class="event-item">
-                        <img src="images/temple.jpg" alt="Temple pooja" />
-                        <div class="event-info">
-                            <span>Pooja</span>
-                            <h3>Chhath Puja</h3>
-                            <p>Take part in this revered ritual with prayers, offerings, and a deeply spiritual collective experience.</p>
-                            <div class="event-meta">
-                                <span>15 Nov</span>
-                                <span>Sunrise</span>
-                            </div>
-                        </div>
-                    </article>
+</main>
 
-                    <article class="event-item">
-                        <img src="images/temple2.jpg" alt="Temple bhajan" />
-                        <div class="event-info">
-                            <span>Bhajan</span>
-                            <h3>Evening Kirtan</h3>
-                            <p>Spend a peaceful evening with devotional singing, spiritual reflection, and shared blessings.</p>
-                            <div class="event-meta">
-                                <span>Every Sunday</span>
-                                <span>7:00 PM</span>
-                            </div>
-                        </div>
-                    </article>
 
-                    <article class="event-item">
-                        <img src="images/temple.jpg" alt="Mahashivratri" />
-                        <div class="event-info">
-                            <span>Spiritual Night</span>
-                            <h3>Mahashivratri</h3>
-                            <p>Observe the divine night of Shiva with fasting, chanting, abhishek, and midnight prayer.</p>
-                            <div class="event-meta">
-                                <span>06 Feb</span>
-                                <span>Night</span>
-                            </div>
-                        </div>
-                    </article>
 
-                    <article class="event-item">
-                        <img src="images/temple2.jpg" alt="Temple seva" />
-                        <div class="event-info">
-                            <span>Seva</span>
-                            <h3>Community Prasad</h3>
-                            <p>Enjoy the blessings of seva through prasad distribution, food service, and volunteer care.</p>
-                            <div class="event-meta">
-                                <span>Monthly</span>
-                                <span>11:00 AM</span>
-                            </div>
-                        </div>
-                    </article>
+<!-- ================= FOOTER ================= -->
+
+<footer class="site-footer">
+
+    <div class="container footer-inner">
+
+
+        <div class="footer-content">
+
+
+            <div class="footer-brand">
+
+                <h3>
+                    TOT - Temple of Turki
+                </h3>
+
+                <p id="footerText">
+                    Faith, service, culture and community.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a
+                    href="index.html"
+                    id="footerHome">
+                    Home
+                </a>
+
+                <a
+                    href="index.html#about"
+                    id="footerAbout">
+                    About
+                </a>
+
+                <a
+                    href="events.html"
+                    id="footerEvents">
+                    Events
+                </a>
+
+                <a
+                    href="index.html#gallery"
+                    id="footerGallery">
+                    Gallery
+                </a>
+
+                <a
+                    href="index.html#donation"
+                    id="footerDonation">
+                    Donation
+                </a>
+
+                <a
+                    href="index.html#contact"
+                    id="footerContact">
+                    Contact
+                </a>
+
+            </div>
+
+
+            <!-- SOCIAL MEDIA -->
+
+            <div class="footer-social">
+
+                <h4 id="followUs">
+                    Follow Us
+                </h4>
+
+
+                <div class="social-icons">
+
+                    <a
+                        href="#"
+                        target="_blank"
+                        aria-label="YouTube">
+                        YouTube
+                    </a>
+
+
+                    <a
+                        href="#"
+                        target="_blank"
+                        aria-label="Facebook">
+                        Facebook
+                    </a>
+
+
+                    <a
+                        href="#"
+                        target="_blank"
+                        aria-label="Instagram">
+                        Instagram
+                    </a>
+
+
+                    <a
+                        href="https://wa.me/919999998888"
+                        target="_blank"
+                        aria-label="WhatsApp">
+                        WhatsApp
+                    </a>
+
                 </div>
-            </div>
-        </section>
-    </main>
 
-    <footer class="site-footer">
-        <div class="container footer-inner">
-            <p>© 2026 Jai Baba Dihbar Temple. All Rights Reserved.</p>
+            </div>
+
         </div>
-    </footer>
+
+
+        <div class="footer-bottom">
+
+            <p id="copyright">
+                © 2026 TOT - Temple of Turki. All Rights Reserved.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- ================= LANGUAGE SCRIPT ================= -->
+
+<script>
+
+const languageSelect =
+    document.getElementById("language");
+
+
+languageSelect.addEventListener(
+    "change",
+    function () {
+
+        if (this.value === "hi") {
+
+            setHindi();
+
+        } else {
+
+            setEnglish();
+
+        }
+
+    }
+);
+
+
+
+function setHindi() {
+
+    document.documentElement.lang = "hi";
+
+
+    document.getElementById("navHome").textContent =
+        "होम";
+
+    document.getElementById("navAbout").textContent =
+        "हमारे बारे में";
+
+    document.getElementById("navEvents").textContent =
+        "कार्यक्रम";
+
+    document.getElementById("navGallery").textContent =
+        "गैलरी";
+
+    document.getElementById("navNotice").textContent =
+        "सूचना";
+
+    document.getElementById("navDonate").textContent =
+        "दान करें";
+
+    document.getElementById("navContact").textContent =
+        "संपर्क";
+
+    document.getElementById("navAdmin").textContent =
+        "एडमिन लॉगिन";
+
+    document.getElementById("authLink").textContent =
+        "यूजर लॉगिन";
+
+
+    document.getElementById("eventHeroBadge").textContent =
+        "मंदिर कैलेंडर";
+
+    document.getElementById("eventPageTitle").textContent =
+        "आगामी कार्यक्रम और आध्यात्मिक उत्सव";
+
+    document.getElementById("eventPageText").textContent =
+        "सामुदायिक प्रार्थना, भक्ति सभा और पारंपरिक उत्सवों में शामिल हों, जो शांति, आस्था और एकता को बढ़ाते हैं।";
+
+
+    document.getElementById("event1Tag").textContent =
+        "दैनिक अनुष्ठान";
+
+    document.getElementById("event1Title").textContent =
+        "प्रातः आरती";
+
+    document.getElementById("event1Text").textContent =
+        "पवित्र मंत्रों, दिव्य आशीर्वाद और भक्तिमय शांत वातावरण के साथ अपने दिन की शुरुआत करें।";
+
+    document.getElementById("event1Date").textContent =
+        "प्रतिदिन";
+
+    document.getElementById("event1Time").textContent =
+        "सुबह 5:00 बजे";
+
+
+    document.getElementById("event2Tag").textContent =
+        "उत्सव";
+
+    document.getElementById("event2Title").textContent =
+        "दीपावली उत्सव";
+
+    document.getElementById("event2Text").textContent =
+        "दीप अर्पण, प्रार्थना, सांस्कृतिक कार्यक्रम और सामुदायिक आनंद के साथ दीपावली मनाएं।";
+
+    document.getElementById("event2Date").textContent =
+        "08 नवम्बर";
+
+    document.getElementById("event2Time").textContent =
+        "शाम 6:30 बजे";
+
+
+    document.getElementById("event3Tag").textContent =
+        "पूजा";
+
+    document.getElementById("event3Title").textContent =
+        "छठ पूजा";
+
+    document.getElementById("event3Text").textContent =
+        "प्रार्थना, अर्घ्य और आध्यात्मिक सामूहिक अनुभव के साथ इस पवित्र अनुष्ठान में शामिल हों।";
+
+    document.getElementById("event3Date").textContent =
+        "15 नवम्बर";
+
+    document.getElementById("event3Time").textContent =
+        "सूर्योदय";
+
+
+    document.getElementById("event4Tag").textContent =
+        "भजन";
+
+    document.getElementById("event4Title").textContent =
+        "संध्या कीर्तन";
+
+    document.getElementById("event4Text").textContent =
+        "भक्ति गायन, आध्यात्मिक चिंतन और सामूहिक आशीर्वाद के साथ शांतिपूर्ण शाम बिताएं।";
+
+    document.getElementById("event4Date").textContent =
+        "हर रविवार";
+
+    document.getElementById("event4Time").textContent =
+        "शाम 7:00 बजे";
+
+
+    document.getElementById("event5Tag").textContent =
+        "आध्यात्मिक रात्रि";
+
+    document.getElementById("event5Title").textContent =
+        "महाशिवरात्रि";
+
+    document.getElementById("event5Text").textContent =
+        "व्रत, मंत्र जाप, अभिषेक और मध्यरात्रि पूजा के साथ भगवान शिव की पवित्र रात्रि मनाएं।";
+
+    document.getElementById("event5Date").textContent =
+        "06 फरवरी";
+
+    document.getElementById("event5Time").textContent =
+        "रात्रि";
+
+
+    document.getElementById("event6Tag").textContent =
+        "सेवा";
+
+    document.getElementById("event6Title").textContent =
+        "सामुदायिक प्रसाद";
+
+    document.getElementById("event6Text").textContent =
+        "प्रसाद वितरण, भोजन सेवा और स्वयंसेवी सेवा के माध्यम से सेवा का आशीर्वाद प्राप्त करें।";
+
+    document.getElementById("event6Date").textContent =
+        "मासिक";
+
+    document.getElementById("event6Time").textContent =
+        "सुबह 11:00 बजे";
+
+
+    document.getElementById("footerText").textContent =
+        "आस्था, सेवा, संस्कृति और समुदाय।";
+
+    document.getElementById("footerHome").textContent =
+        "होम";
+
+    document.getElementById("footerAbout").textContent =
+        "हमारे बारे में";
+
+    document.getElementById("footerEvents").textContent =
+        "कार्यक्रम";
+
+    document.getElementById("footerGallery").textContent =
+        "गैलरी";
+
+    document.getElementById("footerDonation").textContent =
+        "दान";
+
+    document.getElementById("footerContact").textContent =
+        "संपर्क";
+
+    document.getElementById("followUs").textContent =
+        "हमें फॉलो करें";
+
+    document.getElementById("copyright").textContent =
+        "© 2026 TOT - Temple of Turki. सर्वाधिकार सुरक्षित।";
+
+}
+
+
+
+function setEnglish() {
+
+    document.documentElement.lang = "en";
+
+
+    document.getElementById("navHome").textContent =
+        "Home";
+
+    document.getElementById("navAbout").textContent =
+        "About Us";
+
+    document.getElementById("navEvents").textContent =
+        "Events";
+
+    document.getElementById("navGallery").textContent =
+        "Gallery";
+
+    document.getElementById("navNotice").textContent =
+        "Notice";
+
+    document.getElementById("navDonate").textContent =
+        "Donation";
+
+    document.getElementById("navContact").textContent =
+        "Contact";
+
+    document.getElementById("navAdmin").textContent =
+        "Admin Login";
+
+    document.getElementById("authLink").textContent =
+        "User Login";
+
+
+    document.getElementById("eventHeroBadge").textContent =
+        "Temple Calendar";
+
+    document.getElementById("eventPageTitle").textContent =
+        "Upcoming Events & Spiritual Celebrations";
+
+    document.getElementById("eventPageText").textContent =
+        "Join community prayers, devotional gatherings, and traditional celebrations that bring peace, faith, and unity.";
+
+
+    document.getElementById("event1Tag").textContent =
+        "Daily Ritual";
+
+    document.getElementById("event1Title").textContent =
+        "Morning Aarti";
+
+    document.getElementById("event1Text").textContent =
+        "Begin your day with sacred chants, divine blessings, and a peaceful atmosphere of devotion.";
+
+    document.getElementById("event1Date").textContent =
+        "Every Day";
+
+    document.getElementById("event1Time").textContent =
+        "5:00 AM";
+
+
+    document.getElementById("event2Tag").textContent =
+        "Festival";
+
+    document.getElementById("event2Title").textContent =
+        "Diwali Celebration";
+
+    document.getElementById("event2Text").textContent =
+        "Celebrate the festival of lights with diya offerings, prayers, cultural programs, and community joy.";
+
+    document.getElementById("event2Date").textContent =
+        "08 Nov";
+
+    document.getElementById("event2Time").textContent =
+        "6:30 PM";
+
+
+    document.getElementById("event3Tag").textContent =
+        "Pooja";
+
+    document.getElementById("event3Title").textContent =
+        "Chhath Puja";
+
+    document.getElementById("event3Text").textContent =
+        "Take part in this revered ritual with prayers, offerings, and a deeply spiritual collective experience.";
+
+    document.getElementById("event3Date").textContent =
+        "15 Nov";
+
+    document.getElementById("event3Time").textContent =
+        "Sunrise";
+
+
+    document.getElementById("event4Tag").textContent =
+        "Bhajan";
+
+    document.getElementById("event4Title").textContent =
+        "Evening Kirtan";
+
+    document.getElementById("event4Text").textContent =
+        "Spend a peaceful evening with devotional singing, spiritual reflection, and shared blessings.";
+
+    document.getElementById("event4Date").textContent =
+        "Every Sunday";
+
+    document.getElementById("event4Time").textContent =
+        "7:00 PM";
+
+
+    document.getElementById("event5Tag").textContent =
+        "Spiritual Night";
+
+    document.getElementById("event5Title").textContent =
+        "Mahashivratri";
+
+    document.getElementById("event5Text").textContent =
+        "Observe the divine night of Shiva with fasting, chanting, abhishek, and midnight prayer.";
+
+    document.getElementById("event5Date").textContent =
+        "06 Feb";
+
+    document.getElementById("event5Time").textContent =
+        "Night";
+
+
+    document.getElementById("event6Tag").textContent =
+        "Seva";
+
+    document.getElementById("event6Title").textContent =
+        "Community Prasad";
+
+    document.getElementById("event6Text").textContent =
+        "Experience the blessings of seva through prasad distribution, food service, and volunteer care.";
+
+    document.getElementById("event6Date").textContent =
+        "Monthly";
+
+    document.getElementById("event6Time").textContent =
+        "11:00 AM";
+
+
+    document.getElementById("footerText").textContent =
+        "Faith, service, culture and community.";
+
+    document.getElementById("footerHome").textContent =
+        "Home";
+
+    document.getElementById("footerAbout").textContent =
+        "About";
+
+    document.getElementById("footerEvents").textContent =
+        "Events";
+
+    document.getElementById("footerGallery").textContent =
+        "Gallery";
+
+    document.getElementById("footerDonation").textContent =
+        "Donation";
+
+    document.getElementById("footerContact").textContent =
+        "Contact";
+
+    document.getElementById("followUs").textContent =
+        "Follow Us";
+
+    document.getElementById("copyright").textContent =
+        "© 2026 TOT - Temple of Turki. All Rights Reserved.";
+
+}
+
+</script>
+
+
+
+<!-- ================= MOBILE MENU ================= -->
+
+<script>
+
+const mobileMenuButton =
+    document.getElementById("mobileMenuButton");
+
+const mainNav =
+    document.getElementById("mainNav");
+
+
+if (mobileMenuButton && mainNav) {
+
+    mobileMenuButton.addEventListener(
+        "click",
+        function () {
+
+            mainNav.classList.toggle(
+                "mobile-menu-open"
+            );
+
+        }
+    );
+
+}
+
+
+const navLinks =
+    document.querySelectorAll(".nav-links a");
+
+
+navLinks.forEach(function (link) {
+
+    link.addEventListener(
+        "click",
+        function () {
+
+            if (mainNav) {
+
+                mainNav.classList.remove(
+                    "mobile-menu-open"
+                );
+
+            }
+
+        }
+    );
+
+});
+
+</script>
+
+
+
+<!-- AUTH -->
+
+<script
+    type="module"
+    src="auth-client.js">
+</script>
+
+
 </body>
+
 </html>

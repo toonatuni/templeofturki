@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Temple of Turki - User Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header class="site-header">
+
+    <div class="container navbar">
+
+        <div class="logo">
+            TOT - Temple of Turki
+        </div>
+
+
+        <nav>
+
+            <ul class="nav-links">
+
+                <li>
+                    <a href="index.html">
+                        Home
+                    </a>
+                </li>
+
+                <li>
+                    <a href="events.html">
+                        Events
+                    </a>
+                </li>
+
+                <li>
+                    <a href="index.html#donation">
+                        Donation
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+
+        <button
+            id="logoutButton"
+            class="submit-btn"
+            type="button">
+
+            Logout
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<main>
+
+
+    <!-- DASHBOARD HERO -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <span class="section-tag">
+                    User Dashboard
+                </span>
+
+                <h1>
+                    Welcome to Temple of Turki
+                </h1>
+
+                <p>
+                    Manage your temple activities
+                    from your personal dashboard.
+                </p>
+
+            </div>
+
+
+            <!-- USER INFORMATION -->
+
+            <div class="form-card">
+
+                <h2>
+                    My Account
+                </h2>
+
+                <p>
+                    <strong>Email:</strong>
+                </p>
+
+                <p id="userEmail">
+                    Loading...
+                </p>
+
+            </div>
+
+
+            <!-- DASHBOARD OPTIONS -->
+
+            <div class="feature-list">
+
+
+                <article>
+
+                    <h3>
+                        Donation
+                    </h3>
+
+                    <p>
+                        Make a donation to support
+                        Temple of Turki.
+                    </p>
+
+                    <a
+                        href="index.html#donation"
+                        class="primary-btn">
+
+                        Donate
+
+                    </a>
+
+                </article>
+
+
+                <article>
+
+                    <h3>
+                        Puja / Prasad
+                    </h3>
+
+                    <p>
+                        Book puja and prasad services
+                        from the temple.
+                    </p>
+
+                    <button
+                        class="secondary-btn"
+                        type="button">
+
+                        Coming Soon
+
+                    </button>
+
+                </article>
+
+
+                <article>
+
+                    <h3>
+                        Donation History
+                    </h3>
+
+                    <p>
+                        View your previous donations
+                        and payment details.
+                    </p>
+
+                    <button
+                        class="secondary-btn"
+                        type="button">
+
+                        View History
+
+                    </button>
+
+                </article>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<script
+    type="module"
+    src="user-dashboard.js">
+</script>
+
+
+</body>
+
+</html>

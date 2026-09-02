@@ -1,6 +1,6 @@
 async function loadDonations() {
     try {
-        const response = await fetch("http://localhost:5000/api/donations");
+        const response = await window.templeApiFetch("/api/admin/donations");
         const result = await response.json();
 
         if (!result.success) {
@@ -24,8 +24,10 @@ async function loadDonations() {
                     <td>${donation.name}</td>
                     <td>${donation.mobile}</td>
                     <td>₹${donation.amount}</td>
-                    <td>${new Date(donation.date).toLocaleDateString()}</td>
+                    <td>${new Date(donation.createdAt).toLocaleDateString()}</td>
+                    <td>${donation.status}${donation.utr ? ` (${donation.utr})` : ""}</td>
                     <td>
+                        ${donation.status === "pending" ? `<button onclick="markDonationPaid('${donation._id}')">Mark paid</button>` : ""}
                         <button onclick="deleteDonation('${donation._id}')">
                             Delete
                         </button>
@@ -48,7 +50,7 @@ async function deleteDonation(id) {
     if (!confirm("Delete this donation?")) return;
 
     const response = await fetch(
-        `http://localhost:5000/api/donations/${id}`,
+        `/api/admin/donations/${id}`,
         {
             method: "DELETE"
         }
@@ -61,7 +63,18 @@ async function deleteDonation(id) {
     loadDonations();
 }
 
-loadDonations();
+async function markDonationPaid(id) {
+    const response = await window.templeApiFetch(`/api/admin/donations/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "paid" })
+    });
+    const result = await response.json();
+    alert(result.success ? "Donation marked as paid" : result.message);
+    loadDonations();
+}
+
+window.templeAuthReady.then(loadDonations);
 
 //search donor
 document.getElementById("search").addEventListener("keyup", function () {
@@ -107,7 +120,7 @@ function exportPDF() {
     const doc = new jsPDF();
 
     doc.setFontSize(18);
-    doc.text("Jai Baba Dihbar Temple", 14, 15);
+    doc.text("TOT - Temple of Turki", 14, 15);
 
     doc.setFontSize(13);
     doc.text("Donation Report", 14, 23);
@@ -151,3 +164,183 @@ function exportPDF() {
 
     doc.save("Temple_Donation_Report.pdf");
 }
+// ===============================
+// ANNOUNCEMENT SYSTEM
+// ===============================
+
+async function loadAnnouncements() {
+
+    try {
+
+        const response = await fetch("/api/announcements");
+
+        const result = await response.json();
+
+        const list = document.getElementById("announcementList");
+
+        if (!result.success) {
+            list.innerHTML = "Announcements load failed";
+            return;
+        }
+
+        if (result.data.length === 0) {
+            list.innerHTML = "No announcements available";
+            return;
+        }
+
+        list.innerHTML = "";
+
+        result.data.forEach((announcement) => {
+
+            const date = new Date(
+                announcement.createdAt
+            ).toLocaleDateString();
+
+            list.innerHTML += `
+                <div class="announcement-item">
+
+                    <h3>${announcement.title}</h3>
+
+                    <p>${announcement.message}</p>
+
+                    <small>${date}</small>
+
+                    <br><br>
+
+                    <button
+                        onclick="deleteAnnouncement('${announcement._id}')">
+                        Delete
+                    </button>
+
+                </div>
+            `;
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("announcementList").innerHTML =
+            "Server Error";
+
+    }
+}
+
+
+async function addAnnouncement() {
+
+    const title =
+        document.getElementById("announcementTitle").value.trim();
+
+    const message =
+        document.getElementById("announcementMessage").value.trim();
+
+
+    if (!title || !message) {
+
+        alert("Title and message are required");
+
+        return;
+    }
+
+
+    try {
+
+        const response = await window.templeApiFetch(
+            "/api/announcements",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    title: title,
+                    message: message
+                })
+            }
+        );
+
+
+        const result = await response.json();
+
+
+        if (!result.success) {
+
+            alert(result.message);
+
+            return;
+        }
+
+
+        alert("Announcement Added Successfully");
+
+
+        document.getElementById(
+            "announcementTitle"
+        ).value = "";
+
+
+        document.getElementById(
+            "announcementMessage"
+        ).value = "";
+
+
+        loadAnnouncements();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Server Error");
+
+    }
+
+}
+
+
+async function deleteAnnouncement(id) {
+
+    if (!confirm("Delete this announcement?")) {
+        return;
+    }
+
+
+    try {
+
+        const response = await window.templeApiFetch(
+            `/api/announcements/${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+
+        const result = await response.json();
+
+
+        alert(result.message);
+
+
+        if (result.success) {
+            loadAnnouncements();
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Server Error");
+
+    }
+
+}
+
+
+// Load announcements after authentication
+window.templeAuthReady.then(() => {
+    loadAnnouncements();
+});

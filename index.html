@@ -4,284 +4,1033 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jai Baba Dihbar Temple</title>
+
+    <title>TOT - Temple of Turki</title>
+
     <link rel="stylesheet" href="style.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
-    <header class="site-header">
-        <div class="container navbar">
-            <div class="logo" id="logo">🛕 Jai Baba Dihbar</div>
 
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#home" id="navHome">होम</a></li>
-                    <li><a href="#about" id="navAbout">हमारे बारे में</a></li>
-                    <li><a href="events.html" id="navEvents">कार्यक्रम</a></li>
-                    <li><a href="#gallery" id="navGallery">गैलरी</a></li>
-                    <li><a href="#donation" id="navDonate">दान करें</a></li>
-                    <li><a href="#contact" id="navContact">संपर्क</a></li>
-                    <li><a href="admin-login.html" id="navAdmin">एडमिन लॉगिन</a></li>
-                </ul>
-            </nav>
+<!-- ================= HEADER ================= -->
 
-            <div class="nav-actions">
-                <select id="language" aria-label="Language">
-                    <option value="en">English</option>
-                    <option value="hi" selected>हिन्दी</option>
-                </select>
-                <button id="themeToggle" class="icon-button theme-toggle" type="button" aria-label="Toggle dark mode">🌙</button>
-                <button class="icon-button" type="button" onclick="openDashboard()">डैशबोर्ड</button>
-            </div>
+<header class="site-header">
+
+    <div class="container navbar">
+
+        <a href="#home" class="logo">
+            <span class="logo-main">TOT</span>
+            <span class="logo-sub">Temple of Turki</span>
+        </a>
+
+        <button
+            class="mobile-menu-button"
+            id="mobileMenuButton"
+            type="button"
+            aria-label="Open Menu">
+            ☰
+        </button>
+
+        <nav id="mainNav">
+
+            <ul class="nav-links">
+
+                <li>
+                    <a href="#home" id="navHome">Home</a>
+                </li>
+
+                <li>
+                    <a href="#about" id="navAbout">About</a>
+                </li>
+
+                <li>
+                    <a href="events.html" id="navEvents">Events</a>
+                </li>
+
+                <li>
+                    <a href="#gallery" id="navGallery">Gallery</a>
+                </li>
+
+                <li>
+                    <a href="#notice" id="navNotice">Notice</a>
+                </li>
+
+                <li>
+                    <a href="#donation" id="navDonate">Donate</a>
+                </li>
+
+                <li>
+                    <a href="#contact" id="navContact">Contact</a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <div class="nav-actions">
+
+            <select id="language" aria-label="Language">
+
+                <option value="en" selected>
+                    English
+                </option>
+
+                <option value="hi">
+                    हिन्दी
+                </option>
+
+            </select>
+
+            <button
+                id="themeToggle"
+                class="theme-button"
+                type="button">
+                Dark Mode
+            </button>
+
+            <a
+                href="user-login.html"
+                class="login-button"
+                id="authLink">
+                User Login
+            </a>
+
+            <a
+                href="admin-login.html"
+                class="admin-button"
+                id="navAdmin">
+                Admin Login
+            </a>
+
         </div>
-    </header>
 
-    <main>
-        <section class="hero" id="home">
-            <div class="container hero-inner">
-                <div class="hero-copy">
-                    <span class="eyebrow" id="heroBadge">पवित्र विरासत • वैशाली, बिहार</span>
-                    <h1 id="title">भक्ति, सेवा और शांति का पवित्र घर।</h1>
-                    <p id="welcome">आधिकारिक मंदिर वेबसाइट पर आपका स्वागत है, जहाँ आस्था, सामुदायिक भावना और दान एक साथ मिलकर मंदिर सेवा और उत्सव को मजबूत बनाते हैं।</p>
+    </div>
 
-                    <div class="hero-actions">
-                        <a href="#donation" class="primary-btn" id="donateBtn">दान करें</a>
-                        <a href="events.html" class="secondary-btn" id="exploreEventsBtn">कार्यक्रम देखें</a>
-                    </div>
+</header>
 
-                    <ul class="hero-highlights">
-                        <li id="heroHighlight1">दैनिक आरती</li>
-                        <li id="heroHighlight2">उत्सव उत्सव</li>
-                        <li id="heroHighlight3">सामुदायिक सेवा</li>
-                    </ul>
-                </div>
 
-                <div class="hero-visual">
-                    <div class="floating-card">
-                        <span>Daily Prayers</span>
-                        <strong>5:00 AM – 9:00 PM</strong>
-                    </div>
-                    <img src="images/temple.jpg" alt="Jai Baba Dihbar Temple" />
-                </div>
+<main>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-overlay"></div>
+
+    <div class="container hero-inner">
+
+        <div class="hero-content">
+
+            <span class="hero-label" id="heroBadge">
+                Sacred Heritage • Vaishali, Bihar
+            </span>
+
+            <h1 id="title">
+                A spiritual home for devotion, service and peace.
+            </h1>
+
+            <p id="welcome">
+                Welcome to the official Temple of Turki website.
+                Discover our traditions, celebrations, community
+                service and ways to support the temple.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a
+                    href="#donation"
+                    class="primary-btn"
+                    id="donateBtn">
+                    Donate Now
+                </a>
+
+                <a
+                    href="events.html"
+                    class="outline-btn"
+                    id="exploreEventsBtn">
+                    Explore Events
+                </a>
+
             </div>
-        </section>
 
-        <section class="info-strip">
-            <div class="container info-grid">
-                <div>
-                    <strong>15k+</strong>
-                    <span>Devotees served</span>
-                </div>
-                <div>
-                    <strong>365</strong>
-                    <span>Days of worship</span>
-                </div>
-                <div>
-                    <strong>12+</strong>
-                    <span>Festivals celebrated</span>
-                </div>
-                <div>
-                    <strong>24/7</strong>
-                    <span>Temple support</span>
-                </div>
+            <div class="hero-features">
+
+                <span id="heroHighlight1">
+                    Daily Aarti
+                </span>
+
+                <span id="heroHighlight2">
+                    Festival Celebrations
+                </span>
+
+                <span id="heroHighlight3">
+                    Community Seva
+                </span>
+
             </div>
-        </section>
 
-        <section class="section about-section" id="about">
-            <div class="container about-layout">
-                <div class="about-image">
-                    <img src="images/temple2.jpg" alt="Temple architecture" />
-                </div>
-
-                <div class="about-content">
-                    <span class="section-tag">About the Temple</span>
-                    <h2>Serving faith, culture, and community with devotion.</h2>
-                    <p>Jai Baba Dihbar Temple stands as a spiritual sanctuary where devotees gather for prayer, celebration, and service. We invite everyone to participate in rituals, festivals, and meaningful charitable giving to support temple growth and community care.</p>
-
-                    <div class="feature-list">
-                        <article>
-                            <h3>Daily Worship</h3>
-                            <p>Morning and evening aarti, sacred rituals, and peaceful darshan for every visitor.</p>
-                        </article>
-                        <article>
-                            <h3>Community Service</h3>
-                            <p>Food distribution, seva programs, and support for families in need.</p>
-                        </article>
-                        <article>
-                            <h3>Festival Spirit</h3>
-                            <p>Grand celebrations with bhajans, pooja, and vibrant community participation.</p>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section gallery-section" id="gallery">
-            <div class="container">
-                <div class="section-heading">
-                    <span class="section-tag" id="galleryTag">मंदिर गैलरी</span>
-                    <h2 id="galleryHeading">भक्ति और शांति के क्षण</h2>
-                </div>
-
-                <div class="gallery-grid">
-                    <img src="images/temple.jpg" alt="Temple front view" />
-                    <img src="images/temple2.jpg" alt="Temple courtyard" />
-                    <img src="images/temple.jpg" alt="Temple shrine" />
-                </div>
-            </div>
-        </section>
-
-        <section class="section community-section" id="community">
-            <div class="container">
-                <div class="section-heading">
-                    <span class="section-tag" id="communityTag">स्थानीय योगदान</span>
-                    <h2 id="communityHeading">स्थानीय लोग अपनी तस्वीरें साझा करें</h2>
-                </div>
-
-                <div class="community-upload-box">
-                    <div class="upload-panel">
-                        <label for="communityImageInput" id="uploadLabel">अपनी मंदिर तस्वीर अपलोड करें</label>
-                        <input id="communityImageInput" type="file" accept="image/*" />
-                        <button type="button" id="uploadImageBtn" class="submit-btn">तस्वीर अपलोड करें</button>
-                    </div>
-
-                    <div id="communityGallery" class="community-gallery" aria-live="polite"></div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section events-section" id="events">
-            <div class="container">
-                <div class="section-heading">
-                    <span class="section-tag" id="upcomingEventsTag">आगामी कार्यक्रम</span>
-                    <h2 id="upcomingEventsHeading">मंदिर उत्सव में शामिल हों</h2>
-                </div>
-
-                <div class="event-grid">
-                    <article class="event-card">
-                        <div class="event-date">
-                            <strong>08</strong>
-                            <span>नव</span>
-                        </div>
-                        <div>
-                            <h3 id="event1Title">दीपावली उत्सव</h3>
-                            <p id="event1Text">समुदाय के लिए बड़ा आरती, सांस्कृतिक प्रार्थना और शाम की मिठाइयाँ।</p>
-                        </div>
-                    </article>
-
-                    <article class="event-card">
-                        <div class="event-date">
-                            <strong>15</strong>
-                            <span>नव</span>
-                        </div>
-                        <div>
-                            <h3 id="event2Title">छठ पूजा</h3>
-                            <p id="event2Text">पारंपरिक आशीर्वाद के साथ भक्ति सभा और सूर्य उदय अनुष्ठान।</p>
-                        </div>
-                    </article>
-
-                    <article class="event-card">
-                        <div class="event-date">
-                            <strong>06</strong>
-                            <span>फर</span>
-                        </div>
-                        <div>
-                            <h3 id="event3Title">महाशिवरात्रि</h3>
-                            <p id="event3Text">प्रार्थना, शिवलिंग अभिषेक और आध्यात्मिक भजन की रात।</p>
-                        </div>
-                    </article>
-                </div>
-
-                <div class="cta-panel">
-                    <div>
-                        <span class="section-tag light" id="volunteerTag">हमसे जुड़ें</span>
-                        <h3 id="volunteerText">मंदिर सेवा और उत्सव का हिस्सा बनें।</h3>
-                    </div>
-                    <a href="events.html" class="primary-btn" id="eventCalendarBtn">पूरा कार्यक्रम देखें</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section donation-section" id="donation">
-            <div class="container donation-layout">
-                <div class="donation-content">
-                    <span class="section-tag" id="supportTag">मंदिर का सहयोग</span>
-                    <h2 id="donationHeading">आपका दान आस्था, संस्कृति और सेवा को संजोता है।</h2>
-                    <p id="donationText">मंदिर रखरखाव, दैनिक पूजा, उत्सव आयोजन, सामुदायिक प्रसाद और पवित्र सेवाओं के लिए सहयोग करें।</p>
-
-                    <div class="impact-grid">
-                        <div>
-                            <strong>₹10,000</strong>
-                            <span id="impact1">दैनिक पूजा सामग्री</span>
-                        </div>
-                        <div>
-                            <strong>₹25,000</strong>
-                            <span id="impact2">उत्सव आयोजन</span>
-                        </div>
-                        <div>
-                            <strong>₹50,000</strong>
-                            <span id="impact3">मंदिर पुनर्निर्माण</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-card">
-                    <h3 id="donationFormTitle">दान करें</h3>
-                    <form id="donation-form">
-                        <div class="form-row">
-                            <input type="text" id="name" placeholder="आपका नाम" required>
-                        </div>
-                        <div class="form-row">
-                            <input type="tel" id="mobile" placeholder="मोबाइल नंबर" required>
-                        </div>
-                        <div class="form-row">
-                            <input type="number" id="amount" placeholder="दान राशि" min="1" required>
-                        </div>
-
-                        <div class="preset-amounts">
-                            <button type="button" class="amount-pill" data-amount="500">₹500</button>
-                            <button type="button" class="amount-pill" data-amount="1000">₹1000</button>
-                            <button type="button" class="amount-pill" data-amount="2500">₹2500</button>
-                            <button type="button" class="amount-pill" data-amount="5000">₹5000</button>
-                        </div>
-
-                        <button type="submit" class="submit-btn">💳 दान करें</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <section class="section contact-section" id="contact">
-            <div class="container contact-layout">
-                <div class="contact-info">
-                    <span class="section-tag" id="visitTag">मंदिर दर्शन</span>
-                    <h2 id="visitHeading">मंदिर यात्रा की योजना बनाएं</h2>
-                    <p>📍 ग्राम बर्दिहा तुर्की, पातेपुर, वैशाली, बिहार</p>
-                    <p>📞 +91 9999998888</p>
-                    <p>📧 temple@example.com</p>
-
-                    <div class="contact-actions">
-                        <a href="https://wa.me/919999998888" target="_blank" class="primary-btn" id="whatsappBtn">व्हाट्सऐप करें</a>
-                        <a href="tel:+919999998888" class="secondary-btn" id="callBtn">अभी कॉल करें</a>
-                    </div>
-                </div>
-
-                <div class="map-card">
-                    <iframe src="https://www.google.com/maps?q=25.804713,85.543417&output=embed" loading="lazy" allowfullscreen></iframe>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="site-footer">
-        <div class="container footer-inner">
-            <p>© 2026 Jai Baba Dihbar Temple. All Rights Reserved.</p>
         </div>
-    </footer>
 
-    <script src="script.js"></script>
-    <script type="module" src="firebase.js"></script>
+
+        <div class="hero-image-wrapper">
+
+            <div class="hero-image-card">
+
+                <img
+                    src="images/temple-origin.jpg"
+                    alt="Temple of Turki">
+
+            </div>
+
+            <div class="hero-image-info">
+
+                <span>
+                    Temple of Turki
+                </span>
+
+                <strong>
+                    Turki, Vaishali, Bihar
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= STATS ================= -->
+
+<section class="stats-section">
+
+    <div class="container stats-grid">
+
+        <div class="stat-card">
+
+            <strong>15K+</strong>
+
+            <span>
+                Devotees Served
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <strong>365</strong>
+
+            <span>
+                Days of Worship
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <strong>12+</strong>
+
+            <span>
+                Festivals
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <strong>24/7</strong>
+
+            <span>
+                Temple Support
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+
+<section class="section about-section" id="about">
+
+    <div class="container two-column">
+
+        <div class="section-image">
+
+            <img
+                src="images/temple2.jpg"
+                alt="Temple of Turki">
+
+        </div>
+
+
+        <div class="section-content">
+
+            <span class="section-label" id="aboutTag">
+                About The Temple
+            </span>
+
+            <h2 id="aboutHeading">
+                Serving faith, culture and community with devotion.
+            </h2>
+
+            <p id="aboutText">
+                Temple of Turki is a place where devotees come
+                together for prayer, worship, festivals and
+                community service. The temple preserves spiritual
+                traditions while bringing people together through
+                seva and celebration.
+            </p>
+
+            <div class="feature-grid">
+
+                <div class="feature-card">
+
+                    <h3>
+                        Daily Worship
+                    </h3>
+
+                    <p>
+                        Morning and evening aarti, sacred rituals
+                        and peaceful darshan.
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <h3>
+                        Community Service
+                    </h3>
+
+                    <p>
+                        Seva activities, community support and
+                        charitable initiatives.
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <h3>
+                        Festival Celebrations
+                    </h3>
+
+                    <p>
+                        Traditional festivals, pooja, bhajan
+                        and community gatherings.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= NOTICE ================= -->
+
+<section class="section notice-section" id="notice">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-label" id="noticeTag">
+                Temple Notice
+            </span>
+
+            <h2 id="noticeHeading">
+                Latest Information & Announcements
+            </h2>
+
+        </div>
+
+
+        <div class="notice-grid" id="noticeList">
+
+            <article class="notice-card">
+
+                <span class="notice-date">
+                    Temple Notice
+                </span>
+
+                <h3>
+                    Latest Temple Information
+                </h3>
+
+                <p>
+                    Important temple information, worship
+                    updates and announcements will be displayed here.
+                </p>
+
+            </article>
+
+
+            <article class="notice-card">
+
+                <span class="notice-date">
+                    Information
+                </span>
+
+                <h3>
+                    Special Pooja & Aarti
+                </h3>
+
+                <p>
+                    Information about special pooja, aarti
+                    and religious activities.
+                </p>
+
+            </article>
+
+
+            <article class="notice-card">
+
+                <span class="notice-date">
+                    Announcement
+                </span>
+
+                <h3>
+                    Upcoming Temple Events
+                </h3>
+
+                <p>
+                    New information about upcoming temple
+                    programs and celebrations.
+                </p>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= GALLERY ================= -->
+
+<section class="section gallery-section" id="gallery">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-label" id="galleryTag">
+                Temple Gallery
+            </span>
+
+            <h2 id="galleryHeading">
+                Moments of Faith and Serenity
+            </h2>
+
+        </div>
+
+
+        <div class="gallery-grid" id="galleryGrid">
+
+            <div class="gallery-item">
+
+                <img
+                    src="images/temple-origin.jpg"
+                    alt="Temple of Turki">
+
+                <div class="gallery-caption">
+                    Temple of Turki
+                </div>
+
+            </div>
+
+
+            <div class="gallery-item">
+
+                <img
+                    src="images/temple2.jpg"
+                    alt="Temple surroundings">
+
+                <div class="gallery-caption">
+                    Temple Surroundings
+                </div>
+
+            </div>
+
+
+            <div class="gallery-item">
+
+                <img
+                    src="images/temple.jpg"
+                    alt="Temple view">
+
+                <div class="gallery-caption">
+                    Sacred Temple
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= EVENTS ================= -->
+
+<section class="section events-section" id="events">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span
+                class="section-label"
+                id="upcomingEventsTag">
+                Upcoming Events
+            </span>
+
+            <h2 id="upcomingEventsHeading">
+                Join Our Temple Celebrations
+            </h2>
+
+        </div>
+
+
+        <div class="event-grid">
+
+            <article class="event-card">
+
+                <div class="event-date">
+
+                    <strong>08</strong>
+
+                    <span>Nov</span>
+
+                </div>
+
+                <div class="event-content">
+
+                    <h3>
+                        Diwali Celebration
+                    </h3>
+
+                    <p>
+                        Grand aarti, devotional prayers,
+                        cultural gathering and evening celebration.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <article class="event-card">
+
+                <div class="event-date">
+
+                    <strong>15</strong>
+
+                    <span>Nov</span>
+
+                </div>
+
+                <div class="event-content">
+
+                    <h3>
+                        Chhath Puja
+                    </h3>
+
+                    <p>
+                        Traditional worship, devotional gathering
+                        and sunrise rituals.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <article class="event-card">
+
+                <div class="event-date">
+
+                    <strong>06</strong>
+
+                    <span>Feb</span>
+
+                </div>
+
+                <div class="event-content">
+
+                    <h3>
+                        Mahashivratri
+                    </h3>
+
+                    <p>
+                        Special prayers, Shivling Abhishek
+                        and devotional bhajans.
+                    </p>
+
+                </div>
+
+            </article>
+
+        </div>
+
+
+        <div class="events-cta">
+
+            <div>
+
+                <span class="section-label light">
+                    Temple Calendar
+                </span>
+
+                <h3>
+                    Be a part of temple seva and celebrations.
+                </h3>
+
+            </div>
+
+            <a
+                href="events.html"
+                class="white-btn"
+                id="eventCalendarBtn">
+                View Full Calendar
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= DONATION ================= -->
+
+<section class="section donation-section" id="donation">
+
+    <div class="container donation-layout">
+
+        <div class="donation-info">
+
+            <span
+                class="section-label"
+                id="supportTag">
+                Support The Temple
+            </span>
+
+            <h2 id="donationHeading">
+                Your donation helps preserve faith, culture and service.
+            </h2>
+
+            <p id="donationText">
+                Your contribution supports temple maintenance,
+                daily worship, festival preparation, community
+                service and other sacred initiatives.
+            </p>
+
+
+            <div class="impact-grid">
+
+                <div>
+
+                    <strong>₹10,000</strong>
+
+                    <span>
+                        Daily Worship
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <strong>₹25,000</strong>
+
+                    <span>
+                        Festival Support
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <strong>₹50,000</strong>
+
+                    <span>
+                        Temple Development
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="donation-card">
+
+            <h3 id="donationFormTitle">
+                Make a Donation
+            </h3>
+
+            <p class="form-description">
+                Enter your details to continue with UPI payment.
+            </p>
+
+
+            <form id="donation-form">
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your name"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="mobile">
+                        Mobile Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="mobile"
+                        placeholder="Enter mobile number"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="amount">
+                        Donation Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        id="amount"
+                        placeholder="Enter amount"
+                        min="1"
+                        required>
+
+                </div>
+
+
+                <div class="preset-amounts">
+
+                    <button
+                        type="button"
+                        class="amount-pill"
+                        data-amount="101">
+                        ₹101
+                    </button>
+
+                    <button
+                        type="button"
+                        class="amount-pill"
+                        data-amount="201">
+                        ₹201
+                    </button>
+
+                    <button
+                        type="button"
+                        class="amount-pill"
+                        data-amount="301">
+                        ₹301
+                    </button>
+
+                    <button
+                        type="button"
+                        class="amount-pill"
+                        data-amount="501">
+                        ₹501
+                    </button>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn">
+                    Continue to UPI
+                </button>
+
+            </form>
+
+
+            <!-- UPI PANEL -->
+
+            <div
+                id="upiPaymentPanel"
+                class="upi-panel"
+                hidden>
+
+                <div class="upi-header">
+
+                    <h4>
+                        Complete UPI Payment
+                    </h4>
+
+                    <p id="upiDetails"></p>
+
+                </div>
+
+
+                <img
+                    id="upiQrCode"
+                    class="upi-qr"
+                    alt="Temple UPI QR Code">
+
+
+                <a
+                    id="upiOpenLink"
+                    class="primary-btn upi-open"
+                    href="#">
+                    Open UPI App
+                </a>
+
+
+                <div class="form-group">
+
+                    <label for="upiUtr">
+                        UTR Number
+                    </label>
+
+                    <input
+                        id="upiUtr"
+                        type="text"
+                        inputmode="numeric"
+                        placeholder="Enter UTR after payment">
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="submitUtrButton"
+                    class="submit-btn">
+                    Submit UTR
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+
+<section class="section contact-section" id="contact">
+
+    <div class="container contact-layout">
+
+        <div class="contact-info">
+
+            <span
+                class="section-label"
+                id="visitTag">
+                Visit Us
+            </span>
+
+            <h2 id="visitHeading">
+                Plan Your Temple Visit
+            </h2>
+
+            <div class="contact-details">
+
+                <p>
+                    Gram Bardih Turki, Patepur,
+                    Vaishali, Bihar
+                </p>
+
+                <p>
+                    +91 9999998888
+                </p>
+
+                <p>
+                    temple@example.com
+                </p>
+
+            </div>
+
+
+            <div class="contact-buttons">
+
+                <a
+                    href="https://wa.me/919999998888"
+                    target="_blank"
+                    class="whatsapp-button"
+                    id="whatsappBtn">
+                    WhatsApp Us
+                </a>
+
+                <a
+                    href="tel:+919999998888"
+                    class="call-button"
+                    id="callBtn">
+                    Call Now
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="map-card">
+
+            <iframe
+                src="https://www.google.com/maps?q=25.804713,85.543417&output=embed"
+                loading="lazy"
+                allowfullscreen>
+            </iframe>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="site-footer">
+
+    <div class="container footer-grid">
+
+        <div class="footer-brand">
+
+            <h3>
+                TOT - Temple of Turki
+            </h3>
+
+            <p>
+                Faith, service, culture and community.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <h4>
+                Quick Links
+            </h4>
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+            <a href="#events">
+                Events
+            </a>
+
+            <a href="#gallery">
+                Gallery
+            </a>
+
+            <a href="#donation">
+                Donation
+            </a>
+
+            <a href="#contact">
+                Contact
+            </a>
+
+        </div>
+
+
+        <div class="footer-social">
+
+            <h4>
+                Follow Us
+            </h4>
+
+            <div class="social-links">
+
+                <a
+                    href="#"
+                    target="_blank"
+                    aria-label="YouTube">
+                    YouTube
+                </a>
+
+                <a
+                    href="#"
+                    target="_blank"
+                    aria-label="Facebook">
+                    Facebook
+                </a>
+
+                <a
+                    href="#"
+                    target="_blank"
+                    aria-label="Instagram">
+                    Instagram
+                </a>
+
+                <a
+                    href="https://wa.me/919999998888"
+                    target="_blank"
+                    aria-label="WhatsApp">
+                    WhatsApp
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 TOT - Temple of Turki. All Rights Reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<!-- ================= SCRIPTS ================= -->
+<script type="module" src="auth.js"></script>
+<script type="module" src="templeApiFetch.js"></script>
+<script src="script.js"></script>
+
+<script type="module" src="firebase.js"></script>
+
+<script type="module" src="auth-client.js"></script>
+
 </body>
 
 </html>

@@ -1,350 +1,1170 @@
-const form = document.getElementById("donation-form");
+/* =====================================================
+   TEMPLE OF TURKI
+   MAIN FRONTEND SCRIPT
+===================================================== */
 
-if (form) {
-    form.addEventListener("submit", async function (e) {
-        e.preventDefault();
 
-        const donation = {
-            name: document.getElementById("name").value,
-            mobile: document.getElementById("mobile").value,
-            amount: Number(document.getElementById("amount").value)
-        };
+/* =====================================================
+   MOBILE MENU
+===================================================== */
 
-        try {
-            const response = await fetch("http://localhost:5000/api/donate", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(donation)
-            });
+const mobileMenuButton =
+    document.getElementById("mobileMenuButton");
 
-            const data = await response.json();
-            alert(data.message);
+const mainNav =
+    document.getElementById("mainNav");
 
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+if (mobileMenuButton && mainNav) {
 
-            doc.setFontSize(20);
-            doc.text("Jai Baba Dihbar Temple", 20, 20);
+    mobileMenuButton.addEventListener(
+        "click",
+        function () {
 
-            doc.setFontSize(14);
-            doc.text("Donation Receipt", 20, 35);
-            doc.text("Name : " + donation.name, 20, 55);
-            doc.text("Mobile : " + donation.mobile, 20, 70);
-            doc.text("Amount : Rs." + donation.amount, 20, 85);
-            doc.text("Date : " + new Date().toLocaleDateString(), 20, 100);
-            doc.save("Temple-Donation-Receipt.pdf");
+            mainNav.classList.toggle(
+                "mobile-menu-open"
+            );
 
-            const message = `🛕 Jai Baba Dihbar Temple
-
-Name: ${donation.name}
-
-Amount: Rs.${donation.amount}
-
-I have donated successfully.
-
-Jai Baba Dihbar 🙏`;
-
-            window.open("https://wa.me/?text=" + encodeURIComponent(message), "_blank");
-            form.reset();
-        } catch (error) {
-            alert("Server Error");
-            console.log(error);
         }
-    });
+    );
+
 }
 
+
+const navLinks =
+    document.querySelectorAll(".nav-links a");
+
+navLinks.forEach(function (link) {
+
+    link.addEventListener(
+        "click",
+        function () {
+
+            if (mainNav) {
+
+                mainNav.classList.remove(
+                    "mobile-menu-open"
+                );
+
+            }
+
+        }
+    );
+
+});
+
+
+/* =====================================================
+   LANGUAGE
+   DEFAULT = ENGLISH
+===================================================== */
+
 const translations = {
-    hi: {
-        navHome: "होम",
-        navAbout: "हमारे बारे में",
-        navEvents: "कार्यक्रम",
-        navGallery: "गैलरी",
-        navDonate: "दान करें",
-        navContact: "संपर्क",
-        navAdmin: "एडमिन लॉगिन",
-        dashboard: "डैशबोर्ड",
-        heroBadge: "पवित्र विरासत • वैशाली, बिहार",
-        title: "भक्ति, सेवा और शांति का पवित्र घर।",
-        welcome: "आधिकारिक मंदिर वेबसाइट पर आपका स्वागत है, जहाँ आस्था, सामुदायिक भावना और दान एक साथ मिलकर मंदिर सेवा और उत्सव को मजबूत बनाते हैं।",
-        donateBtn: "दान करें",
-        exploreEventsBtn: "कार्यक्रम देखें",
-        heroHighlight1: "दैनिक आरती",
-        heroHighlight2: "उत्सव उत्सव",
-        heroHighlight3: "सामुदायिक सेवा",
-        galleryTag: "मंदिर गैलरी",
-        galleryHeading: "भक्ति और शांति के क्षण",
-        communityTag: "स्थानीय योगदान",
-        communityHeading: "स्थानीय लोग अपनी तस्वीरें साझा करें",
-        uploadLabel: "अपनी मंदिर तस्वीर अपलोड करें",
-        uploadButton: "तस्वीर अपलोड करें",
-        upcomingEventsTag: "आगामी कार्यक्रम",
-        upcomingEventsHeading: "मंदिर उत्सव में शामिल हों",
-        volunteerTag: "हमसे जुड़ें",
-        volunteerText: "मंदिर सेवा और उत्सव का हिस्सा बनें।",
-        eventCalendarBtn: "पूरा कार्यक्रम देखें",
-        supportTag: "मंदिर का सहयोग",
-        donationHeading: "आपका दान आस्था, संस्कृति और सेवा को संजोता है।",
-        donationText: "मंदिर रखरखाव, दैनिक पूजा, उत्सव आयोजन, सामुदायिक प्रसाद और पवित्र सेवाओं के लिए सहयोग करें।",
-        donationFormTitle: "दान करें",
-        visitTag: "मंदिर दर्शन",
-        visitHeading: "मंदिर यात्रा की योजना बनाएं",
-        whatsappBtn: "व्हाट्सऐप करें",
-        callBtn: "अभी कॉल करें",
-        eventHeroBadge: "मंदिर कैलेंडर",
-        eventPageTitle: "आगामी कार्यक्रम और आध्यात्मिक उत्सव",
-        eventPageText: "सामुदायिक प्रसाद, भक्ति सभा और पारंपरिक उत्सवों में शामिल हों, जो शांति, आस्था और एकता को बढ़ाते हैं।"
-    },
+
     en: {
+
         navHome: "Home",
         navAbout: "About",
         navEvents: "Events",
         navGallery: "Gallery",
+        navNotice: "Notice",
         navDonate: "Donate",
         navContact: "Contact",
         navAdmin: "Admin Login",
-        dashboard: "Dashboard",
-        heroBadge: "Sacred heritage • Vaishali, Bihar",
-        title: "A spiritual home for devotion, service, and peace.",
-        welcome: "Welcome to the official temple website where faith, community, and generosity come together for temple seva and celebration.",
-        donateBtn: "Donate Now",
-        exploreEventsBtn: "Explore Events",
-        heroHighlight1: "Daily Aarti",
-        heroHighlight2: "Festival Celebrations",
-        heroHighlight3: "Community Seva",
-        galleryTag: "Temple Gallery",
-        galleryHeading: "Moments of faith and serenity",
-        communityTag: "Local Contribution",
-        communityHeading: "Local people share their temple memories",
-        uploadLabel: "Upload your temple photo",
-        uploadButton: "Upload Photo",
-        upcomingEventsTag: "Upcoming Events",
-        upcomingEventsHeading: "Join the temple celebrations",
-        volunteerTag: "Volunteer with us",
-        volunteerText: "Be a part of temple seva and celebrations.",
-        eventCalendarBtn: "View Full Event Calendar",
-        supportTag: "Support the Temple",
-        donationHeading: "Your donation helps preserve faith, culture, and service.",
-        donationText: "Contribute toward temple maintenance, daily rituals, festival preparations, community langar, and sacred initiatives.",
-        donationFormTitle: "Make a donation",
-        visitTag: "Visit Us",
-        visitHeading: "Plan your temple visit",
-        whatsappBtn: "WhatsApp Us",
-        callBtn: "Call Now",
-        eventHeroBadge: "Temple Calendar",
-        eventPageTitle: "Upcoming events & spiritual celebrations",
-        eventPageText: "Join us for sacred rituals, community meals, devotional gatherings, and traditional festivals that bring peace, faith, and unity."
+
+        heroBadge:
+            "Sacred Heritage • Vaishali, Bihar",
+
+        title:
+            "A spiritual home for devotion, service and peace.",
+
+        welcome:
+            "Welcome to the official Temple of Turki website. Discover our traditions, celebrations, community service and ways to support the temple.",
+
+        donateBtn:
+            "Donate Now",
+
+        exploreEventsBtn:
+            "Explore Events",
+
+        heroHighlight1:
+            "Daily Aarti",
+
+        heroHighlight2:
+            "Festival Celebrations",
+
+        heroHighlight3:
+            "Community Seva",
+
+        aboutTag:
+            "About The Temple",
+
+        aboutHeading:
+            "Serving faith, culture and community with devotion.",
+
+        aboutText:
+            "Temple of Turki is a place where devotees come together for prayer, worship, festivals and community service. The temple preserves spiritual traditions while bringing people together through seva and celebration.",
+
+        noticeTag:
+            "Temple Notice",
+
+        noticeHeading:
+            "Latest Information & Announcements",
+
+        galleryTag:
+            "Temple Gallery",
+
+        galleryHeading:
+            "Moments of Faith and Serenity",
+
+        upcomingEventsTag:
+            "Upcoming Events",
+
+        upcomingEventsHeading:
+            "Join Our Temple Celebrations",
+
+        supportTag:
+            "Support The Temple",
+
+        donationHeading:
+            "Your donation helps preserve faith, culture and service.",
+
+        donationText:
+            "Your contribution supports temple maintenance, daily worship, festival preparation, community service and other sacred initiatives.",
+
+        donationFormTitle:
+            "Make a Donation",
+
+        visitTag:
+            "Visit Us",
+
+        visitHeading:
+            "Plan Your Temple Visit",
+
+        whatsappBtn:
+            "WhatsApp Us",
+
+        callBtn:
+            "Call Now",
+
+        eventCalendarBtn:
+            "View Full Calendar"
+
+    },
+
+
+    hi: {
+
+        navHome:
+            "होम",
+
+        navAbout:
+            "हमारे बारे में",
+
+        navEvents:
+            "कार्यक्रम",
+
+        navGallery:
+            "गैलरी",
+
+        navNotice:
+            "सूचना",
+
+        navDonate:
+            "दान करें",
+
+        navContact:
+            "संपर्क",
+
+        navAdmin:
+            "एडमिन लॉगिन",
+
+        heroBadge:
+            "पवित्र विरासत • वैशाली, बिहार",
+
+        title:
+            "भक्ति, सेवा और शांति का पवित्र घर।",
+
+        welcome:
+            "टेंपल ऑफ तुर्की की आधिकारिक वेबसाइट पर आपका स्वागत है। यहां मंदिर की परंपराओं, उत्सवों, सामुदायिक सेवा और दान से जुड़ी जानकारी प्राप्त करें।",
+
+        donateBtn:
+            "दान करें",
+
+        exploreEventsBtn:
+            "कार्यक्रम देखें",
+
+        heroHighlight1:
+            "दैनिक आरती",
+
+        heroHighlight2:
+            "उत्सव",
+
+        heroHighlight3:
+            "सामुदायिक सेवा",
+
+        aboutTag:
+            "मंदिर के बारे में",
+
+        aboutHeading:
+            "आस्था, संस्कृति और समुदाय की सेवा में समर्पित।",
+
+        aboutText:
+            "टेंपल ऑफ तुर्की एक ऐसा पवित्र स्थान है जहां श्रद्धालु पूजा, आरती, त्योहार और सामुदायिक सेवा के लिए एकत्र होते हैं।",
+
+        noticeTag:
+            "मंदिर सूचना",
+
+        noticeHeading:
+            "नवीनतम सूचना और घोषणाएं",
+
+        galleryTag:
+            "मंदिर गैलरी",
+
+        galleryHeading:
+            "भक्ति और शांति के क्षण",
+
+        upcomingEventsTag:
+            "आगामी कार्यक्रम",
+
+        upcomingEventsHeading:
+            "मंदिर उत्सव में शामिल हों",
+
+        supportTag:
+            "मंदिर का सहयोग",
+
+        donationHeading:
+            "आपका दान आस्था, संस्कृति और सेवा को मजबूत करता है।",
+
+        donationText:
+            "आपका सहयोग मंदिर रखरखाव, दैनिक पूजा, उत्सव, सामुदायिक सेवा और अन्य धार्मिक गतिविधियों में सहायता करता है।",
+
+        donationFormTitle:
+            "दान करें",
+
+        visitTag:
+            "मंदिर दर्शन",
+
+        visitHeading:
+            "मंदिर यात्रा की योजना बनाएं",
+
+        whatsappBtn:
+            "व्हाट्सऐप करें",
+
+        callBtn:
+            "अभी कॉल करें",
+
+        eventCalendarBtn:
+            "पूरा कैलेंडर देखें"
+
     }
+
 };
 
+
+/* =====================================================
+   APPLY LANGUAGE
+===================================================== */
+
 function applyLanguage(lang) {
-    const dict = translations[lang] || translations.hi;
+
+    const dict =
+        translations[lang] ||
+        translations.en;
+
 
     const ids = [
-        "navHome", "navAbout", "navEvents", "navGallery", "navDonate", "navContact", "navAdmin",
-        "heroBadge", "title", "welcome", "donateBtn", "exploreEventsBtn",
-        "heroHighlight1", "heroHighlight2", "heroHighlight3",
-        "galleryTag", "galleryHeading", "communityTag", "communityHeading", "uploadLabel", "uploadButton",
-        "upcomingEventsTag", "upcomingEventsHeading", "volunteerTag", "volunteerText", "eventCalendarBtn",
-        "supportTag", "donationHeading", "donationText", "donationFormTitle",
-        "visitTag", "visitHeading", "whatsappBtn", "callBtn",
-        "eventHeroBadge", "eventPageTitle", "eventPageText"
+
+        "navHome",
+        "navAbout",
+        "navEvents",
+        "navGallery",
+        "navNotice",
+        "navDonate",
+        "navContact",
+        "navAdmin",
+
+        "heroBadge",
+        "title",
+        "welcome",
+
+        "donateBtn",
+        "exploreEventsBtn",
+
+        "heroHighlight1",
+        "heroHighlight2",
+        "heroHighlight3",
+
+        "aboutTag",
+        "aboutHeading",
+        "aboutText",
+
+        "noticeTag",
+        "noticeHeading",
+
+        "galleryTag",
+        "galleryHeading",
+
+        "upcomingEventsTag",
+        "upcomingEventsHeading",
+
+        "supportTag",
+        "donationHeading",
+        "donationText",
+        "donationFormTitle",
+
+        "visitTag",
+        "visitHeading",
+
+        "whatsappBtn",
+        "callBtn",
+
+        "eventCalendarBtn"
+
     ];
 
-    ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && dict[id]) {
-            el.textContent = dict[id];
+
+    ids.forEach(function (id) {
+
+        const element =
+            document.getElementById(id);
+
+
+        if (
+            element &&
+            dict[id]
+        ) {
+
+            element.textContent =
+                dict[id];
+
         }
+
     });
 
-    const dashboardBtn = document.querySelector(".icon-button[onclick*='openDashboard']");
-    if (dashboardBtn) dashboardBtn.textContent = dict.dashboard;
 
-    const languageSelect = document.getElementById("language");
-    if (languageSelect) languageSelect.value = lang;
+    document.documentElement.lang =
+        lang;
 
-    document.documentElement.lang = lang;
-}
 
-const language = document.getElementById("language");
-if (language) {
-    applyLanguage(language.value || "hi");
-    language.addEventListener("change", function () {
-        applyLanguage(this.value);
-    });
-}
+    const languageSelect =
+        document.getElementById("language");
 
-function openDashboard() {
-    window.location.href = "admin-dashboard.html";
-}
 
-const themeToggle = document.getElementById("themeToggle");
-function applyTheme(mode) {
-    const darkMode = mode === "dark";
-    document.body.classList.toggle("dark-mode", darkMode);
-    localStorage.setItem("temple-theme", mode);
-    if (themeToggle) {
-        themeToggle.textContent = darkMode ? "☀️" : "🌙";
-        themeToggle.setAttribute("aria-label", darkMode ? "Switch to light mode" : "Switch to dark mode");
+    if (languageSelect) {
+
+        languageSelect.value =
+            lang;
+
     }
+
+
+    localStorage.setItem(
+        "temple-language",
+        lang
+    );
+
 }
+
+
+/* =====================================================
+   LANGUAGE SELECT
+===================================================== */
+
+const languageSelect =
+    document.getElementById("language");
+
+
+if (languageSelect) {
+
+    const savedLanguage =
+        localStorage.getItem(
+            "temple-language"
+        ) || "en";
+
+
+    applyLanguage(
+        savedLanguage
+    );
+
+
+    languageSelect.addEventListener(
+        "change",
+        function () {
+
+            applyLanguage(
+                this.value
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+const themeToggle =
+    document.getElementById("themeToggle");
+
+
+function applyTheme(mode) {
+
+    const darkMode =
+        mode === "dark";
+
+
+    document.body.classList.toggle(
+        "dark-mode",
+        darkMode
+    );
+
+
+    localStorage.setItem(
+        "temple-theme",
+        mode
+    );
+
+
+    if (themeToggle) {
+
+        themeToggle.textContent =
+            darkMode
+                ? "Light Mode"
+                : "Dark Mode";
+
+    }
+
+}
+
 
 if (themeToggle) {
-    const storedTheme = localStorage.getItem("temple-theme");
-    applyTheme(storedTheme || "light");
-    themeToggle.addEventListener("click", () => {
-        const nextMode = document.body.classList.contains("dark-mode") ? "light" : "dark";
-        applyTheme(nextMode);
-    });
+
+    const savedTheme =
+        localStorage.getItem(
+            "temple-theme"
+        ) || "light";
+
+
+    applyTheme(
+        savedTheme
+    );
+
+
+    themeToggle.addEventListener(
+        "click",
+        function () {
+
+            const nextMode =
+                document.body.classList.contains(
+                    "dark-mode"
+                )
+                    ? "light"
+                    : "dark";
+
+
+            applyTheme(
+                nextMode
+            );
+
+        }
+    );
+
 }
 
-const festivals = [
-    { name: "🪔 Diwali", date: "2026-11-08" },
-    { name: "🙏 Chhath Puja", date: "2026-11-15" },
-    { name: "🕉️ Mahashivratri", date: "2027-02-06" },
-    { name: "🌸 Holi", date: "2027-03-22" },
-    { name: "🚩 Ram Navami", date: "2027-04-15" },
-    { name: "🛕 Janmashtami", date: "2027-08-25" }
-];
 
-function showFestivals() {
-    const festivalList = document.getElementById("festival-list");
-    if (!festivalList) return;
+/* =====================================================
+   DONATION / UPI PAYMENT
+===================================================== */
 
-    const today = new Date();
-    const upcomingFestivals = festivals
-        .filter(festival => new Date(festival.date) >= today)
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
+const donationForm =
+    document.getElementById(
+        "donation-form"
+    );
 
-    if (upcomingFestivals.length === 0) {
-        festivalList.innerHTML = "<p>अभी कोई आगामी त्योहार नहीं है।</p>";
-        return;
-    }
 
-    festivalList.innerHTML = "";
+if (donationForm) {
 
-    upcomingFestivals.forEach(festival => {
-        const date = new Date(festival.date);
-        const formattedDate = date.toLocaleDateString("en-IN", {
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-        });
+    donationForm.addEventListener(
+        "submit",
+        async function (event) {
 
-        const card = document.createElement("div");
-        card.className = "festival-card";
-        card.innerHTML = `
-            <h3>${festival.name}</h3>
-            <p>📅 ${formattedDate}</p>
-        `;
-        festivalList.appendChild(card);
-    });
-}
+            event.preventDefault();
 
-if (document.getElementById("festival-list")) {
-    showFestivals();
-}
 
-const presetButtons = document.querySelectorAll(".amount-pill");
-if (presetButtons.length) {
-    presetButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            const amountInput = document.getElementById("amount");
-            if (amountInput) {
-                amountInput.value = button.dataset.amount;
+            const nameInput =
+                document.getElementById("name");
+
+            const mobileInput =
+                document.getElementById("mobile");
+
+            const amountInput =
+                document.getElementById("amount");
+
+
+            const name =
+                nameInput
+                    ? nameInput.value.trim()
+                    : "";
+
+
+            const mobile =
+                mobileInput
+                    ? mobileInput.value.trim()
+                    : "";
+
+
+            const amount =
+                amountInput
+                    ? Number(amountInput.value)
+                    : 0;
+
+
+            /* -----------------------------------------
+               VALIDATION
+            ----------------------------------------- */
+
+            if (!name) {
+
+                alert(
+                    "Please enter your name."
+                );
+
+                if (nameInput) {
+                    nameInput.focus();
+                }
+
+                return;
             }
-        });
-    });
-}
 
-const communityGallery = document.getElementById("communityGallery");
-const communityImageInput = document.getElementById("communityImageInput");
-const uploadImageBtn = document.getElementById("uploadImageBtn");
 
-function renderCommunityImages() {
-    if (!communityGallery) return;
+            if (!mobile) {
 
-    const savedImages = JSON.parse(localStorage.getItem("templeCommunityImages") || "[]");
-    if (!savedImages.length) {
-        communityGallery.innerHTML = '<div class="empty-state">अभी तक कोई फोटो अपलोड नहीं हुई है।</div>';
-        return;
-    }
+                alert(
+                    "Please enter your mobile number."
+                );
 
-    communityGallery.innerHTML = savedImages.map((image, index) => `
-        <div class="community-photo-card">
-            <img src="${image.src}" alt="Community uploaded image ${index + 1}" />
-            <button type="button" class="remove-photo" data-index="${index}">Remove</button>
-        </div>
-    `).join("");
+                if (mobileInput) {
+                    mobileInput.focus();
+                }
 
-    document.querySelectorAll(".remove-photo").forEach(button => {
-        button.addEventListener("click", () => {
-            const savedImages = JSON.parse(localStorage.getItem("templeCommunityImages") || "[]");
-            savedImages.splice(Number(button.dataset.index), 1);
-            localStorage.setItem("templeCommunityImages", JSON.stringify(savedImages));
-            renderCommunityImages();
-        });
-    });
-}
+                return;
+            }
 
-if (uploadImageBtn && communityImageInput) {
-    uploadImageBtn.addEventListener("click", () => {
-        const file = communityImageInput.files[0];
-        if (!file) {
-            alert("Please choose an image first.");
-            return;
+
+            /* Minimum donation ₹1 */
+
+            if (
+                !Number.isFinite(amount) ||
+                amount < 1
+            ) {
+
+                alert(
+                    "Minimum donation amount is ₹1."
+                );
+
+                if (amountInput) {
+                    amountInput.focus();
+                }
+
+                return;
+            }
+
+
+            /* -----------------------------------------
+               DONATION DATA
+            ----------------------------------------- */
+
+            const donation = {
+
+                name: name,
+
+                mobile: mobile,
+
+                amount: amount
+
+            };
+
+
+            try {
+
+                /* -------------------------------------
+                   AUTHENTICATED FETCH
+                ------------------------------------- */
+
+                const fetchFunction =
+                    window.templeApiFetch;
+
+
+                if (!fetchFunction) {
+
+                    throw new Error(
+                        "Payment authentication system load nahi hua. Page refresh karein."
+                    );
+
+                }
+
+
+                /* -------------------------------------
+                   CREATE UPI PAYMENT
+                ------------------------------------- */
+
+                const response =
+                    await fetchFunction(
+
+                        "/api/payments/upi-intent",
+
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    donation
+                                )
+
+                        }
+
+                    );
+
+
+                /* -------------------------------------
+                   SAFE JSON RESPONSE
+                ------------------------------------- */
+
+                const responseText =
+                    await response.text();
+
+
+                let data = {};
+
+
+                try {
+
+                    data =
+                        responseText
+                            ? JSON.parse(responseText)
+                            : {};
+
+                } catch (jsonError) {
+
+                    console.error(
+                        "Invalid server response:",
+                        responseText
+                    );
+
+                    throw new Error(
+                        "Server ne valid response nahi diya."
+                    );
+
+                }
+
+
+                console.log(
+                    "UPI Intent Response:",
+                    data
+                );
+
+
+                /* -------------------------------------
+                   ERROR CHECK
+                ------------------------------------- */
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+
+                        data.message ||
+                        "UPI payment details could not be created."
+
+                    );
+
+                }
+
+
+                /* -------------------------------------
+                   GET UPI PANEL ELEMENTS
+                ------------------------------------- */
+
+                const upiPanel =
+                    document.getElementById(
+                        "upiPaymentPanel"
+                    );
+
+
+                const upiDetails =
+                    document.getElementById(
+                        "upiDetails"
+                    );
+
+
+                const upiQr =
+                    document.getElementById(
+                        "upiQrCode"
+                    );
+
+
+                const upiOpenLink =
+                    document.getElementById(
+                        "upiOpenLink"
+                    );
+
+
+                const utrButton =
+                    document.getElementById(
+                        "submitUtrButton"
+                    );
+
+
+                /* -------------------------------------
+                   SHOW UPI PANEL
+                ------------------------------------- */
+
+                if (upiPanel) {
+
+                    upiPanel.hidden =
+                        false;
+
+                }
+
+
+                /* -------------------------------------
+                   SHOW UPI DETAILS
+                ------------------------------------- */
+
+                if (upiDetails) {
+
+                    upiDetails.textContent =
+
+                        "UPI ID: " +
+                        data.data.upiId +
+                        " | Amount: ₹" +
+                        data.data.amount;
+
+                }
+
+
+                /* -------------------------------------
+                   SHOW QR CODE
+                ------------------------------------- */
+
+                if (
+                    upiQr &&
+                    data.data.qrCode
+                ) {
+
+                    upiQr.src =
+                        data.data.qrCode;
+
+                }
+
+
+                /* -------------------------------------
+                   OPEN UPI APP
+                ------------------------------------- */
+
+                if (
+                    upiOpenLink &&
+                    data.data.upiLink
+                ) {
+
+                    upiOpenLink.href =
+                        data.data.upiLink;
+
+                }
+
+
+                /* -------------------------------------
+                   SAVE DONATION ID
+                   FOR UTR SUBMISSION
+                ------------------------------------- */
+
+                if (
+                    utrButton &&
+                    data.data.donationId
+                ) {
+
+                    utrButton.dataset.donationId =
+                        data.data.donationId;
+
+                }
+
+
+                /* -------------------------------------
+                   RESET FORM
+                ------------------------------------- */
+
+                donationForm.reset();
+
+
+                /* -------------------------------------
+                   SCROLL TO UPI PANEL
+                ------------------------------------- */
+
+                if (upiPanel) {
+
+                    upiPanel.scrollIntoView({
+
+                        behavior: "smooth",
+
+                        block: "center"
+
+                    });
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Donation Error:",
+                    error
+                );
+
+
+                alert(
+
+                    error.message ||
+                    "Something went wrong while creating UPI payment."
+
+                );
+
+            }
+
         }
+    );
 
-        if (!file.type.startsWith("image/")) {
-            alert("Please upload a valid image file.");
-            return;
+}
+
+
+/* =====================================================
+   UTR SUBMISSION
+===================================================== */
+
+const submitUtrButton =
+    document.getElementById(
+        "submitUtrButton"
+    );
+
+
+if (submitUtrButton) {
+
+    submitUtrButton.addEventListener(
+        "click",
+        async function () {
+
+            const utrInput =
+                document.getElementById(
+                    "upiUtr"
+                );
+
+
+            const utr =
+                utrInput
+                    ? utrInput.value.trim()
+                    : "";
+
+
+            const donationId =
+                this.dataset.donationId;
+
+
+            /* -----------------------------------------
+               VALIDATION
+            ----------------------------------------- */
+
+            if (!utr) {
+
+                alert(
+                    "Please enter the UTR number."
+                );
+
+                if (utrInput) {
+                    utrInput.focus();
+                }
+
+                return;
+            }
+
+
+            if (!/^\d{6,30}$/.test(utr)) {
+
+                alert(
+                    "Please enter a valid UTR number."
+                );
+
+                if (utrInput) {
+                    utrInput.focus();
+                }
+
+                return;
+            }
+
+
+            if (!donationId) {
+
+                alert(
+                    "Donation information is missing."
+                );
+
+                return;
+            }
+
+
+            try {
+
+                /* -------------------------------------
+                   AUTHENTICATED FETCH
+                ------------------------------------- */
+
+                const fetchFunction =
+                    window.templeApiFetch;
+
+
+                if (!fetchFunction) {
+
+                    throw new Error(
+                        "Payment authentication system load nahi hua. Page refresh karein."
+                    );
+
+                }
+
+
+                /* -------------------------------------
+                   SUBMIT UTR
+                ------------------------------------- */
+
+                const response =
+                    await fetchFunction(
+
+                        "/api/payments/upi-utr",
+
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    donationId:
+                                        donationId,
+
+                                    utr:
+                                        utr
+
+                                })
+
+                        }
+
+                    );
+
+
+                /* -------------------------------------
+                   SAFE JSON RESPONSE
+                ------------------------------------- */
+
+                const responseText =
+                    await response.text();
+
+
+                let data = {};
+
+
+                try {
+
+                    data =
+                        responseText
+                            ? JSON.parse(responseText)
+                            : {};
+
+                } catch (jsonError) {
+
+                    console.error(
+                        "Invalid server response:",
+                        responseText
+                    );
+
+                    throw new Error(
+                        "Server ne valid response nahi diya."
+                    );
+
+                }
+
+
+                console.log(
+                    "UTR Response:",
+                    data
+                );
+
+
+                /* -------------------------------------
+                   ERROR CHECK
+                ------------------------------------- */
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+
+                        data.message ||
+                        "UTR submission failed."
+
+                    );
+
+                }
+
+
+                /* -------------------------------------
+                   SUCCESS
+                ------------------------------------- */
+
+                alert(
+
+                    data.message ||
+                    "UTR submitted successfully."
+
+                );
+
+
+                /* -------------------------------------
+                   HIDE UPI PANEL
+                ------------------------------------- */
+
+                const upiPanel =
+                    document.getElementById(
+                        "upiPaymentPanel"
+                    );
+
+
+                if (upiPanel) {
+
+                    upiPanel.hidden =
+                        true;
+
+                }
+
+
+                /* -------------------------------------
+                   CLEAR UTR
+                ------------------------------------- */
+
+                if (utrInput) {
+
+                    utrInput.value =
+                        "";
+
+                }
+
+
+                /* -------------------------------------
+                   CLEAR DONATION ID
+                ------------------------------------- */
+
+                this.dataset.donationId =
+                    "";
+
+
+            } catch (error) {
+
+                console.error(
+                    "UTR Error:",
+                    error
+                );
+
+
+                alert(
+
+                    error.message ||
+                    "Something went wrong while submitting UTR."
+
+                );
+
+            }
+
         }
+    );
 
-        const reader = new FileReader();
-        reader.onload = () => {
-            const savedImages = JSON.parse(localStorage.getItem("templeCommunityImages") || "[]");
-            savedImages.unshift({ src: reader.result, name: file.name });
-            localStorage.setItem("templeCommunityImages", JSON.stringify(savedImages));
-            communityImageInput.value = "";
-            renderCommunityImages();
-        };
-
-        reader.readAsDataURL(file);
-    });
 }
 
-renderCommunityImages();
 
-function payUPI() {
-    const name = document.getElementById("name").value.trim();
-    const mobile = document.getElementById("mobile").value.trim();
-    const amount = document.getElementById("amount").value.trim();
+/* =====================================================
+   PRESET DONATION AMOUNTS
+===================================================== */
 
-    if (!name) {
-        alert("Please enter your name");
-        return;
+const presetButtons =
+    document.querySelectorAll(
+        ".amount-pill"
+    );
+
+
+presetButtons.forEach(
+    function (button) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const amountInput =
+                    document.getElementById(
+                        "amount"
+                    );
+
+
+                if (amountInput) {
+
+                    amountInput.value =
+                        this.dataset.amount;
+
+
+                    amountInput.focus();
+
+                }
+
+            }
+        );
+
     }
+);
 
-    if (!mobile) {
-        alert("Please enter your mobile number");
-        return;
-    }
 
-    if (!amount || Number(amount) <= 0) {
-        alert("Please enter a valid donation amount");
-        return;
-    }
+/* =====================================================
+   INITIAL UPI PANEL STATE
+===================================================== */
 
-    const upiId = "templeturki@upi";
-    const upiLink = "upi://pay" +
-        "?pa=" + encodeURIComponent(upiId) +
-        "&pn=" + encodeURIComponent("Jai Baba Dihbar Temple") +
-        "&am=" + encodeURIComponent(amount) +
-        "&cu=INR" +
-        "&tn=" + encodeURIComponent("Temple Donation - " + name);
+const initialUpiPanel =
+    document.getElementById(
+        "upiPaymentPanel"
+    );
 
-    window.location.href = upiLink;
+
+if (initialUpiPanel) {
+
+    initialUpiPanel.hidden =
+        true;
+
 }
 
+
+/* =====================================================
+   END OF SCRIPT
+===================================================== */

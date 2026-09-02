@@ -1,25 +1,31 @@
 const mongoose = require("mongoose");
 
 const donationSchema = new mongoose.Schema({
+    userId: { type: String, required: true, index: true },
     name: {
-    type: String,
-    required: true,
+        type: String,
+        required: true,
     },
     mobile: {
-    type: String,
-    required: true,
+        type: String,
+        required: true,
     },
     amount: {
-    type: Number,
-    required: true,
+        type: Number,
+        required: true,
     },
     purpose: {
-    type: String,
-    default: "Temple Donation",
+        type: String,
+        default: "TOT Donation",
     },
+    status: { type: String, enum: ["pending", "paid", "failed"], default: "pending", index: true },
+    utr: { type: String, trim: true },
+    paidAt: Date,
+    createdAt: { type: Date, default: Date.now },
     date: {
-    type: Date,
-    default: Date.now,
+        type: Date,
+        default: Date.now,
+        select: false
     },
 });
 

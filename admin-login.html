@@ -1,177 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Temple Admin Login</title>
 
     <link rel="stylesheet" href="style.css">
 
     <style>
-
-        body{
-            margin:0;
-            font-family:Arial, sans-serif;
-            background:#f4f4f4;
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
         }
 
-        nav{
-            background:#8B0000;
-            color:white;
-            padding:20px;
-            text-align:center;
+        nav {
+            background: #8B0000;
+            color: white;
+            padding: 20px;
+            text-align: center;
         }
 
-        .login-container{
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:80vh;
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
         }
 
-        .login-box{
-            background:white;
-            width:400px;
-            padding:40px;
-            border-radius:15px;
-            box-shadow:0 0 20px rgba(0,0,0,0.2);
-            text-align:center;
+        .login-box {
+            background: white;
+            width: 400px;
+            max-width: 90%;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            text-align: center;
         }
 
-        .login-box h2{
-            color:#8B0000;
+        .login-box h2 {
+            color: #8B0000;
+            margin-bottom: 25px;
         }
 
-        .login-box input{
-            width:90%;
-            padding:12px;
-            margin-top:10px;
-            border-radius:8px;
-            border:1px solid #ccc;
+        .login-box input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 15px;
         }
 
-        .login-box button{
-            width:95%;
-            padding:12px;
-            margin-top:15px;
-            border:none;
-            border-radius:8px;
-            cursor:pointer;
-            background:#8B0000;
-            color:white;
-            font-size:16px;
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #8B0000;
+            color: white;
+            font-size: 16px;
         }
 
-        .login-box button:hover{
-            background:#b22222;
+        .login-box button:hover {
+            background: #b22222;
         }
 
+        .google-btn {
+            background: #4285F4 !important;
+        }
+
+        .google-btn:hover {
+            background: #3367d6 !important;
+        }
+
+        .divider {
+            margin: 20px 0;
+            color: #777;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-size: 14px;
+        }
     </style>
 
 </head>
 
 <body>
 
-<nav>
+    <nav>
+        <h2>TOT - Temple of Turki</h2>
+    </nav>
 
-    <h2>🛕 Jai Baba Dihbar Temple</h2>
+    <div class="login-container">
 
-</nav>
+        <div class="login-box">
 
-<div class="login-container">
+            <h2>Admin Login</h2>
 
-    <div class="login-box">
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter Email"
+                autocomplete="email"
+            >
 
-        <h2>Admin Login</h2>
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter Password"
+                autocomplete="current-password"
+            >
 
-        <input
-            type="email"
-            id="email"
-            placeholder="Enter Email">
+            <button id="loginButton">
+                Login
+            </button>
 
-        <br>
+            <div class="divider">
+                OR
+            </div>
 
-        <input
-            type="password"
-            id="password"
-            placeholder="Enter Password">
+            <button
+                id="googleLoginButton"
+                class="google-btn">
+                Login with Google
+            </button>
 
-        <br>
+            <div
+                id="loginMessage"
+                class="message">
+            </div>
 
-        <button onclick="login()">
-            Login
-        </button>
-
-        <button onclick="googleLogin()">
-            Login with Google
-        </button>
+        </div>
 
     </div>
 
-</div>
 
-<script type="module">
+    <!-- FIREBASE LOGIN -->
 
-import { auth } from "./firebase.js";
+    <script type="module">
 
-import {
-    signInWithEmailAndPassword,
-    GoogleAuthProvider,
-    signInWithPopup
-}
-from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+        import { auth } from "./firebase.js";
 
-window.login = function () {
+        import {
+            signInWithEmailAndPassword,
+            GoogleAuthProvider,
+            signInWithPopup
+        }
+        from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-    const email =
-        document.getElementById("email").value;
 
-    const password =
-        document.getElementById("password").value;
+        // ==========================================
+        // EMAIL / PASSWORD LOGIN
+        // ==========================================
 
-    signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-    )
+        document
+            .getElementById("loginButton")
+            .addEventListener("click", async function () {
 
-    .then(() => {
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim();
 
-        alert("Login Successful");
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
 
-        window.location.href = "index.html";
+                const message =
+                    document.getElementById("loginMessage");
 
-    })
 
-    .catch((error) => {
+                if (!email) {
 
-        alert(error.message);
+                    message.textContent =
+                        "Please enter your email.";
 
-    });
-};
+                    return;
+                }
 
-const provider = new GoogleAuthProvider();
 
-window.googleLogin = function () {
+                if (!password) {
 
-    signInWithPopup(auth, provider)
+                    message.textContent =
+                        "Please enter your password.";
 
-    .then(() => {
+                    return;
+                }
 
-        alert("Google Login Successful");
 
-        window.location.href = "index.html";
+                try {
 
-    })
+                    message.textContent =
+                        "Logging in...";
 
-    .catch((error) => {
 
-        alert(error.message);
+                    const userCredential =
+                        await signInWithEmailAndPassword(
+                            auth,
+                            email,
+                            password
+                        );
 
-    });
-};
 
-</script>
+                    console.log(
+                        "Login successful:",
+                        userCredential.user
+                    );
+
+
+                    message.textContent =
+                        "Login successful. Redirecting...";
+
+
+                    window.location.href =
+                        "admin-dashboard.html";
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Email Login Error:",
+                        error
+                    );
+
+
+                    message.textContent =
+                        "Login failed: " +
+                        error.message;
+
+                }
+
+            });
+
+
+        // ==========================================
+        // GOOGLE LOGIN
+        // ==========================================
+
+        const provider =
+            new GoogleAuthProvider();
+
+
+        document
+            .getElementById("googleLoginButton")
+            .addEventListener("click", async function () {
+
+                const message =
+                    document.getElementById(
+                        "loginMessage"
+                    );
+
+
+                try {
+
+                    message.textContent =
+                        "Opening Google Login...";
+
+
+                    const result =
+                        await signInWithPopup(
+                            auth,
+                            provider
+                        );
+
+
+                    console.log(
+                        "Google Login successful:",
+                        result.user
+                    );
+
+
+                    message.textContent =
+                        "Google login successful. Redirecting...";
+
+
+                    window.location.href =
+                        "admin-dashboard.html";
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Google Login Error:",
+                        error
+                    );
+
+
+                    message.textContent =
+                        "Google Login failed: " +
+                        error.message;
+
+                }
+
+            });
+
+    </script>
 
 </body>
+
 </html>
