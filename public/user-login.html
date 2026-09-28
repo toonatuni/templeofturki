@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>User Account | Temple of Turki</title>
+
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@100..900&display=swap"
+    >
+
+    <style>
+
+        /* =========================================
+           ROOT COLORS
+        ========================================= */
+
+        :root {
+
+            --temple-orange: #e86f20;
+
+            --temple-dark-orange: #b94716;
+
+            --temple-maroon: #7a260f;
+
+            --temple-brown: #4a1b10;
+
+            --text-dark: #26313f;
+
+            --text-light: #6d7888;
+
+            --white: #ffffff;
+
+            --input-bg: rgba(255, 255, 255, 0.75);
+
+            --border-color: rgba(150, 92, 55, 0.20);
+
+        }
+
+
+        /* =========================================
+           BODY
+        ========================================= */
+
+        * {
+
+            box-sizing: border-box;
+
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family: "Noto Sans Devanagari", sans-serif;
+
+            color:
+                var(--text-dark);
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    rgba(74, 27, 16, 0.82),
+                    rgba(184, 71, 22, 0.72),
+                    rgba(232, 111, 32, 0.55)
+                ),
+
+                url("temple.jpg");
+
+            background-size:
+                cover;
+
+            background-position:
+                center;
+
+            background-attachment:
+                fixed;
+
+        }
+
+
+        /* =========================================
+           PAGE OVERLAY
+        ========================================= */
+
+        .page-overlay {
+
+            min-height: 100vh;
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            align-items:
+                center;
+
+            padding:
+                30px 20px;
+
+            background:
+
+                rgba(
+                    30,
+                    20,
+                    15,
+                    0.28
+                );
+
+        }
+
+
+        /* =========================================
+           LOGIN CARD
+        ========================================= */
+
+        .auth-card {
+
+            width:
+                100%;
+
+            max-width:
+                520px;
+
+            padding:
+                48px;
+
+            border-radius:
+                36px;
+
+            background:
+
+                rgba(
+                    255,
+                    250,
+                    245,
+                    0.93
+                );
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            box-shadow:
+
+                0 25px 70px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.35
+                );
+
+            border:
+
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.55
+                );
+
+        }
+
+
+        /* =========================================
+           CLOSE BUTTON
+        ========================================= */
+
+        .close-button {
+
+            width:
+                52px;
+
+            height:
+                52px;
+
+            float:
+                right;
+
+            border:
+                none;
+
+            border-radius:
+                50%;
+
+            background:
+
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.65
+                );
+
+            color:
+                #697384;
+
+            font-size:
+                32px;
+
+            cursor:
+                pointer;
+
+            transition:
+                0.25s;
+
+            box-shadow:
+
+                0 4px 15px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.12
+                );
+
+        }
+
+
+        .close-button:hover {
+
+            transform:
+                scale(1.06);
+
+            color:
+                var(--temple-dark-orange);
+
+        }
+
+
+        /* =========================================
+           CLEAR FLOAT
+        ========================================= */
+
+        .clear {
+
+            clear:
+                both;
+
+        }
+
+
+        /* =========================================
+           BRAND
+        ========================================= */
+
+        .brand-name {
+
+            margin-top:
+                20px;
+
+            color:
+                var(--temple-orange);
+
+            font-size:
+                14px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                7px;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        /* =========================================
+           HEADING
+        ========================================= */
+
+        .auth-title {
+
+            margin:
+
+                28px
+                0
+                12px;
+
+            font-family: "Noto Sans Devanagari", sans-serif;
+
+            font-size:
+                58px;
+
+            font-weight:
+                500;
+
+            color:
+                #26303c;
+
+        }
+
+
+        /* =========================================
+           DESCRIPTION
+        ========================================= */
+
+        .auth-description {
+
+            margin:
+                0
+                0
+                35px;
+
+            color:
+                var(--text-light);
+
+            font-size:
+                20px;
+
+            line-height:
+                1.55;
+
+        }
+
+
+        /* =========================================
+           SIGN IN / SIGN UP SWITCH
+        ========================================= */
+
+        .auth-switch {
+
+            display:
+                grid;
+
+            grid-template-columns:
+
+                1fr
+                1fr;
+
+            gap:
+                6px;
+
+            padding:
+                6px;
+
+            margin-bottom:
+                35px;
+
+            border:
+
+                1px solid
+                var(--border-color);
+
+            border-radius:
+                22px;
+
+            background:
+
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.55
+                );
+
+        }
+
+
+        .switch-button {
+
+            border:
+                none;
+
+            padding:
+                16px;
+
+            border-radius:
+                18px;
+
+            background:
+                transparent;
+
+            color:
+                #5f6b7a;
+
+            font-size:
+                18px;
+
+            font-weight:
+                600;
+
+            cursor:
+                pointer;
+
+            transition:
+                0.25s;
+
+        }
+
+
+        .switch-button.active {
+
+            color:
+                white;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #ef7a2c,
+                    #df5a1c
+                );
+
+            box-shadow:
+
+                0 8px 20px
+                rgba(
+                    210,
+                    82,
+                    25,
+                    0.28
+                );
+
+        }
+
+
+        /* =========================================
+           GOOGLE BUTTON
+        ========================================= */
+
+        .google-button {
+
+            width:
+                100%;
+
+            padding:
+                18px;
+
+            border:
+
+                1px solid
+                var(--border-color);
+
+            border-radius:
+                18px;
+
+            background:
+
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.55
+                );
+
+            color:
+                #4f5b6b;
+
+            font-size:
+                18px;
+
+            font-weight:
+                600;
+
+            cursor:
+                pointer;
+
+            transition:
+                0.25s;
+
+        }
+
+
+        .google-button:hover {
+
+            background:
+                white;
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        /* =========================================
+           DIVIDER
+        ========================================= */
+
+        .divider {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                15px;
+
+            margin:
+                28px
+                0;
+
+            color:
+                #7a8492;
+
+            font-size:
+                16px;
+
+        }
+
+
+        .divider::before,
+
+        .divider::after {
+
+            content:
+                "";
+
+            flex:
+                1;
+
+            height:
+                1px;
+
+            background:
+
+                rgba(
+                    100,
+                    100,
+                    100,
+                    0.18
+                );
+
+        }
+
+
+        /* =========================================
+           INPUT GROUP
+        ========================================= */
+
+        .input-group {
+
+            margin-bottom:
+                20px;
+
+        }
+
+
+        .input-group input {
+
+            width:
+                100%;
+
+            padding:
+
+                19px
+                20px;
+
+            border:
+
+                1px solid
+                var(--border-color);
+
+            border-radius:
+                18px;
+
+            outline:
+                none;
+
+            font-size:
+                18px;
+
+            color:
+                var(--text-dark);
+
+            background:
+                var(--input-bg);
+
+            transition:
+                0.25s;
+
+        }
+
+
+        .input-group input:focus {
+
+            border-color:
+                var(--temple-orange);
+
+            box-shadow:
+
+                0 0 0 4px
+                rgba(
+                    232,
+                    111,
+                    32,
+                    0.12
+                );
+
+            background:
+                white;
+
+        }
+
+
+        /* =========================================
+           SUBMIT BUTTON
+        ========================================= */
+
+        .submit-button {
+
+            width:
+                100%;
+
+            margin-top:
+                8px;
+
+            padding:
+                19px;
+
+            border:
+                none;
+
+            border-radius:
+                22px;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #f47a2a,
+                    #e55d1f
+                );
+
+            color:
+                white;
+
+            font-size:
+                21px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+
+            transition:
+                0.25s;
+
+            box-shadow:
+
+                0 12px 25px
+                rgba(
+                    210,
+                    82,
+                    25,
+                    0.25
+                );
+
+        }
+
+
+        .submit-button:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+
+                0 16px 30px
+                rgba(
+                    210,
+                    82,
+                    25,
+                    0.35
+                );
+
+        }
+
+
+        .submit-button:disabled,
+
+        .google-button:disabled {
+
+            opacity:
+                0.65;
+
+            cursor:
+                not-allowed;
+
+            transform:
+                none;
+
+        }
+
+
+        /* =========================================
+           MESSAGE
+        ========================================= */
+
+        .auth-message {
+
+            min-height:
+                24px;
+
+            margin-top:
+                22px;
+
+            text-align:
+                center;
+
+            font-size:
+                15px;
+
+            color:
+                var(--temple-maroon);
+
+        }
+
+
+        /* =========================================
+           BACK HOME
+        ========================================= */
+
+        .back-home {
+
+            display:
+                block;
+
+            margin-top:
+                25px;
+
+            text-align:
+                center;
+
+            color:
+                var(--temple-dark-orange);
+
+            font-weight:
+                700;
+
+            text-decoration:
+                none;
+
+        }
+
+
+        .back-home:hover {
+
+            text-decoration:
+                underline;
+
+        }
+
+
+        /* =========================================
+           HIDDEN FORM
+        ========================================= */
+
+        .hidden {
+
+            display:
+                none;
+
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media
+        (
+            max-width: 600px
+        ) {
+
+            .page-overlay {
+
+                padding:
+                    18px;
+
+                align-items:
+                    flex-start;
+
+                padding-top:
+                    70px;
+
+            }
+
+
+            .auth-card {
+
+                padding:
+
+                    30px
+                    24px;
+
+                border-radius:
+                    30px;
+
+            }
+
+
+            .auth-title {
+
+                font-size:
+                    46px;
+
+            }
+
+
+            .auth-description {
+
+                font-size:
+                    17px;
+
+            }
+
+
+            .brand-name {
+
+                letter-spacing:
+                    5px;
+
+                font-size:
+                    12px;
+
+            }
+
+
+            .switch-button {
+
+                font-size:
+                    16px;
+
+                padding:
+                    14px;
+
+            }
+
+        }
+
+
+        @media
+        (
+            max-width: 400px
+        ) {
+
+            .auth-title {
+
+                font-size:
+                    40px;
+
+            }
+
+
+            .auth-card {
+
+                padding:
+                    25px
+                    18px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <main
+        class="page-overlay">
+
+
+        <section
+            class="auth-card">
+
+
+            <!-- CLOSE -->
+
+            <button
+                type="button"
+                id="closeButton"
+                class="close-button"
+                aria-label="Close">
+
+                ×
+
+            </button>
+
+
+            <div
+                class="clear">
+            </div>
+
+
+            <!-- BRAND -->
+
+            <div
+                class="brand-name">
+
+                TEMPLE OF TURKI
+
+            </div>
+
+
+            <!-- TITLE -->
+
+            <h1
+                id="authTitle"
+                class="auth-title">
+
+                Welcome Back.
+
+            </h1>
+
+
+            <!-- DESCRIPTION -->
+
+            <p
+                id="authDescription"
+                class="auth-description">
+
+                Sign in to your account to continue and manage your temple activities.
+
+            </p>
+
+
+            <!-- SIGN IN / SIGN UP -->
+
+            <div
+                class="auth-switch">
+
+
+                <button
+                    type="button"
+                    id="signInTab"
+                    class="switch-button active">
+
+                    Sign In
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="signUpTab"
+                    class="switch-button">
+
+                    Sign Up
+
+                </button>
+
+
+            </div>
+
+
+            <!-- GOOGLE LOGIN -->
+
+            <button
+                type="button"
+                id="googleLoginButton"
+                class="google-button">
+
+                Continue with Google
+
+            </button>
+
+
+            <!-- DIVIDER -->
+
+            <div
+                class="divider">
+
+                <span>
+                    or continue with email
+                </span>
+
+            </div>
+
+
+            <!-- AUTH FORM -->
+
+            <form
+                id="authForm">
+
+
+                <!-- EMAIL -->
+
+                <div
+                    class="input-group">
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Email address"
+                        autocomplete="email"
+                        required>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div
+                    class="input-group">
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Password (min. 6 characters)"
+                        autocomplete="current-password"
+                        minlength="6"
+                        required>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    id="submitButton"
+                    class="submit-button">
+
+                    Sign In
+
+                </button>
+
+
+            </form>
+
+
+            <!-- MESSAGE -->
+
+            <p
+                id="authMessage"
+                class="auth-message">
+            </p>
+
+
+            <!-- BACK HOME -->
+
+            <a
+                href="index.html"
+                class="back-home">
+
+                Back to Home
+
+            </a>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- FIREBASE AUTH SCRIPT -->
+
+    <script
+        type="module"
+        src="user-login.js">
+    </script>
+
+
+</body>
+
+</html>

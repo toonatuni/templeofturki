@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@100..900&display=swap");
+
 /* =====================================================
    TEMPLE OF TURKI
    MODERN CLEAN DESIGN
@@ -79,12 +81,7 @@ html {
 
 body {
 
-    font-family:
-        "Segoe UI",
-        Tahoma,
-        Geneva,
-        Verdana,
-        sans-serif;
+    font-family: "Noto Sans Devanagari", sans-serif;
 
     background: var(--cream);
 

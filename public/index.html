@@ -46,7 +46,7 @@
                 </li>
 
                 <li>
-                    <a href="events.html" id="navEvents">Events</a>
+                    <a href="#events" id="navEvents">Events</a>
                 </li>
 
                 <li>
@@ -94,15 +94,9 @@
                 href="user-login.html"
                 class="login-button"
                 id="authLink">
-                User Login
+                    Sign In
             </a>
 
-            <a
-                href="admin-login.html"
-                class="admin-button"
-                id="navAdmin">
-                Admin Login
-            </a>
 
         </div>
 
@@ -147,7 +141,7 @@
                 </a>
 
                 <a
-                    href="events.html"
+                    href="#events"
                     class="outline-btn"
                     id="exploreEventsBtn">
                     Explore Events
@@ -602,7 +596,7 @@
             </div>
 
             <a
-                href="events.html"
+                href="#events"
                 class="white-btn"
                 id="eventCalendarBtn">
                 View Full Calendar
@@ -699,6 +693,8 @@
                     <input
                         type="text"
                         id="name"
+                        pattern="[A-Za-z\s]+"
+                        title="Please enter a valid name"
                         placeholder="Enter your name"
                         required>
 
@@ -714,6 +710,8 @@
                     <input
                         type="tel"
                         id="mobile"
+                        pattern="[0-9]{10}"
+        title="Mobile number must be exactly 10 digits"
                         placeholder="Enter mobile number"
                         required>
 
@@ -731,6 +729,7 @@
                         id="amount"
                         placeholder="Enter amount"
                         min="1"
+                        step="1"
                         required>
 
                 </div>
@@ -809,28 +808,14 @@
                     Open UPI App
                 </a>
 
-
-                <div class="form-group">
-
-                    <label for="upiUtr">
-                        UTR Number
-                    </label>
-
-                    <input
-                        id="upiUtr"
-                        type="text"
-                        inputmode="numeric"
-                        placeholder="Enter UTR after payment">
-
-                </div>
-
-
                 <button
                     type="button"
-                    id="submitUtrButton"
-                    class="submit-btn">
-                    Submit UTR
+                    id="downloadReceiptButton"
+                    class="submit-btn"
+                    hidden>
+                    Download Receipt
                 </button>
+
 
             </div>
 
@@ -1023,8 +1008,6 @@
 
 
 <!-- ================= SCRIPTS ================= -->
-<script type="module" src="auth.js"></script>
-<script type="module" src="templeApiFetch.js"></script>
 <script src="script.js"></script>
 
 <script type="module" src="firebase.js"></script>

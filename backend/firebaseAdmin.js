@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const admin = require("firebase-admin");
+const { getAuth } = require("firebase-admin/auth");
+const { getStorage } = require("firebase-admin/storage");
 
 let firebaseApp;
 
@@ -28,7 +30,7 @@ function readServiceAccountConfig() {
     ];
 
     for (const fileName of fallbackFiles) {
-        const filePath = path.join(__dirname, fileName);
+        const filePath = path.join(__dirname, "..", fileName);
         if (fs.existsSync(filePath)) {
             return JSON.parse(fs.readFileSync(filePath, "utf8"));
         }
@@ -49,7 +51,16 @@ function getFirebaseAdmin() {
 }
 
 async function verifyIdToken(token) {
-    return admin.auth(getFirebaseAdmin()).verifyIdToken(token);
+    return getAuth(getFirebaseAdmin()).verifyIdToken(token);
 }
 
-module.exports = { getFirebaseAdmin, verifyIdToken };
+function getFirebaseStorageBucket() {
+    const bucketName = String(process.env.FIREBASE_STORAGE_BUCKET || "").trim();
+    if (!bucketName) {
+        throw new Error("FIREBASE_STORAGE_BUCKET is not configured");
+    }
+
+    return getStorage(getFirebaseAdmin()).bucket(bucketName);
+}
+
+module.exports = { getFirebaseAdmin, getFirebaseStorageBucket, verifyIdToken };

@@ -483,6 +483,50 @@ const donationForm =
         "donation-form"
     );
 
+let latestReceiptData = null;
+
+const downloadReceiptButton =
+    document.getElementById(
+        "downloadReceiptButton"
+    );
+
+if (downloadReceiptButton) {
+    downloadReceiptButton.addEventListener(
+        "click",
+        function () {
+            if (!latestReceiptData) {
+                alert("Receipt details are not available yet.");
+                return;
+            }
+
+            const receipt = [
+                "TOT - TEMPLE OF TURKI",
+                "Donation Receipt",
+                "------------------------------",
+                `Payment ID: ${latestReceiptData.donationId}`,
+                `Donor Name: ${latestReceiptData.name}`,
+                `Mobile: ${latestReceiptData.mobile}`,
+                `Amount: Rs. ${latestReceiptData.amount}`,
+                `Payment Mode: UPI`,
+                `UPI ID: ${latestReceiptData.upiId}`,
+                `Status: ${latestReceiptData.status}`,
+                `Date: ${latestReceiptData.date}`,
+                "",
+                "This receipt confirms that the donation payment was initiated.",
+                "UPI payments may require bank confirmation."
+            ].join("\n");
+
+            const file = new Blob([receipt], { type: "text/plain;charset=utf-8" });
+            const downloadUrl = URL.createObjectURL(file);
+            const link = document.createElement("a");
+            link.href = downloadUrl;
+            link.download = `temple-donation-${latestReceiptData.donationId}.txt`;
+            link.click();
+            URL.revokeObjectURL(downloadUrl);
+        }
+    );
+}
+
 
 if (donationForm) {
 
@@ -683,10 +727,16 @@ if (donationForm) {
                     !data.success
                 ) {
 
+                    if (response.status === 405) {
+                        throw new Error(
+                            "Payment API is unavailable at this address. Start the Node server with 'node server.js' and open http://localhost:5000."
+                        );
+                    }
+
                     throw new Error(
 
                         data.message ||
-                        "UPI payment details could not be created."
+                        `UPI payment could not be created (HTTP ${response.status}).`
 
                     );
 
@@ -718,12 +768,6 @@ if (donationForm) {
                 const upiOpenLink =
                     document.getElementById(
                         "upiOpenLink"
-                    );
-
-
-                const utrButton =
-                    document.getElementById(
-                        "submitUtrButton"
                     );
 
 
@@ -782,23 +826,31 @@ if (donationForm) {
                     upiOpenLink.href =
                         data.data.upiLink;
 
-                }
+                    if (downloadReceiptButton) {
+                        upiOpenLink.onclick = function () {
+                            window.setTimeout(function () {
+                                const completed = window.confirm(
+                                    "Kya aapne UPI app mein payment complete kar diya hai?"
+                                );
 
-
-                /* -------------------------------------
-                   SAVE DONATION ID
-                   FOR UTR SUBMISSION
-                ------------------------------------- */
-
-                if (
-                    utrButton &&
-                    data.data.donationId
-                ) {
-
-                    utrButton.dataset.donationId =
-                        data.data.donationId;
+                                if (completed) {
+                                    downloadReceiptButton.hidden = false;
+                                }
+                            }, 500);
+                        };
+                    }
 
                 }
+
+                latestReceiptData = {
+                    donationId: data.data.donationId,
+                    name: name,
+                    mobile: mobile,
+                    amount: data.data.amount,
+                    upiId: data.data.upiId,
+                    status: data.data.status,
+                    date: new Date().toLocaleString()
+                };
 
 
                 /* -------------------------------------
@@ -837,265 +889,6 @@ if (donationForm) {
 
                     error.message ||
                     "Something went wrong while creating UPI payment."
-
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   UTR SUBMISSION
-===================================================== */
-
-const submitUtrButton =
-    document.getElementById(
-        "submitUtrButton"
-    );
-
-
-if (submitUtrButton) {
-
-    submitUtrButton.addEventListener(
-        "click",
-        async function () {
-
-            const utrInput =
-                document.getElementById(
-                    "upiUtr"
-                );
-
-
-            const utr =
-                utrInput
-                    ? utrInput.value.trim()
-                    : "";
-
-
-            const donationId =
-                this.dataset.donationId;
-
-
-            /* -----------------------------------------
-               VALIDATION
-            ----------------------------------------- */
-
-            if (!utr) {
-
-                alert(
-                    "Please enter the UTR number."
-                );
-
-                if (utrInput) {
-                    utrInput.focus();
-                }
-
-                return;
-            }
-
-
-            if (!/^\d{6,30}$/.test(utr)) {
-
-                alert(
-                    "Please enter a valid UTR number."
-                );
-
-                if (utrInput) {
-                    utrInput.focus();
-                }
-
-                return;
-            }
-
-
-            if (!donationId) {
-
-                alert(
-                    "Donation information is missing."
-                );
-
-                return;
-            }
-
-
-            try {
-
-                /* -------------------------------------
-                   AUTHENTICATED FETCH
-                ------------------------------------- */
-
-                const fetchFunction =
-                    window.templeApiFetch;
-
-
-                if (!fetchFunction) {
-
-                    throw new Error(
-                        "Payment authentication system load nahi hua. Page refresh karein."
-                    );
-
-                }
-
-
-                /* -------------------------------------
-                   SUBMIT UTR
-                ------------------------------------- */
-
-                const response =
-                    await fetchFunction(
-
-                        "/api/payments/upi-utr",
-
-                        {
-
-                            method: "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json"
-
-                            },
-
-                            body:
-                                JSON.stringify({
-
-                                    donationId:
-                                        donationId,
-
-                                    utr:
-                                        utr
-
-                                })
-
-                        }
-
-                    );
-
-
-                /* -------------------------------------
-                   SAFE JSON RESPONSE
-                ------------------------------------- */
-
-                const responseText =
-                    await response.text();
-
-
-                let data = {};
-
-
-                try {
-
-                    data =
-                        responseText
-                            ? JSON.parse(responseText)
-                            : {};
-
-                } catch (jsonError) {
-
-                    console.error(
-                        "Invalid server response:",
-                        responseText
-                    );
-
-                    throw new Error(
-                        "Server ne valid response nahi diya."
-                    );
-
-                }
-
-
-                console.log(
-                    "UTR Response:",
-                    data
-                );
-
-
-                /* -------------------------------------
-                   ERROR CHECK
-                ------------------------------------- */
-
-                if (
-                    !response.ok ||
-                    !data.success
-                ) {
-
-                    throw new Error(
-
-                        data.message ||
-                        "UTR submission failed."
-
-                    );
-
-                }
-
-
-                /* -------------------------------------
-                   SUCCESS
-                ------------------------------------- */
-
-                alert(
-
-                    data.message ||
-                    "UTR submitted successfully."
-
-                );
-
-
-                /* -------------------------------------
-                   HIDE UPI PANEL
-                ------------------------------------- */
-
-                const upiPanel =
-                    document.getElementById(
-                        "upiPaymentPanel"
-                    );
-
-
-                if (upiPanel) {
-
-                    upiPanel.hidden =
-                        true;
-
-                }
-
-
-                /* -------------------------------------
-                   CLEAR UTR
-                ------------------------------------- */
-
-                if (utrInput) {
-
-                    utrInput.value =
-                        "";
-
-                }
-
-
-                /* -------------------------------------
-                   CLEAR DONATION ID
-                ------------------------------------- */
-
-                this.dataset.donationId =
-                    "";
-
-
-            } catch (error) {
-
-                console.error(
-                    "UTR Error:",
-                    error
-                );
-
-
-                alert(
-
-                    error.message ||
-                    "Something went wrong while submitting UTR."
 
                 );
 

@@ -1,0 +1,1185 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@100..900&display=swap");
+
+/* =====================================================
+   ROOT
+===================================================== */
+
+:root {
+
+    --temple-orange: #e66f1f;
+
+    --temple-orange-dark: #9b3515;
+
+    --temple-orange-deep: #6d210d;
+
+    --temple-light: #fffaf4;
+
+    --temple-cream: #f7ede1;
+
+    --text-dark: #202735;
+
+    --text-light: #6d7480;
+
+    --border-color: #d9dce1;
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+
+    box-sizing: border-box;
+
+}
+
+
+html {
+
+    min-height: 100%;
+
+}
+
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    font-family: "Noto Sans Devanagari", sans-serif;
+
+    color:
+        var(--text-dark);
+
+}
+
+
+/* =====================================================
+   AUTH PAGE
+===================================================== */
+
+.auth-page {
+
+    position: relative;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 40px 20px;
+
+    overflow: hidden;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(95, 35, 10, 0.82),
+            rgba(228, 101, 25, 0.45),
+            rgba(40, 20, 10, 0.65)
+        ),
+
+        url("images/temple.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+}
+
+
+/* =====================================================
+   FALLBACK BACKGROUND
+===================================================== */
+
+.auth-page::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -2;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #5d210d,
+            #c95b1b,
+            #f1a25a
+        );
+
+}
+
+
+/* =====================================================
+   BLUR OVERLAY
+===================================================== */
+
+.background-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 0;
+
+    background:
+
+        rgba(
+            45,
+            25,
+            15,
+            0.35
+        );
+
+    backdrop-filter:
+
+        blur(
+            5px
+        );
+
+}
+
+
+/* =====================================================
+   AUTH CARD
+===================================================== */
+
+.auth-card {
+
+    position: relative;
+
+    z-index: 1;
+
+    width: 100%;
+
+    max-width: 560px;
+
+    padding:
+
+        42px
+        56px
+        38px;
+
+    border-radius:
+
+        34px;
+
+    background:
+
+        rgba(
+            255,
+            250,
+            245,
+            0.94
+        );
+
+    border:
+
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.75
+        );
+
+    box-shadow:
+
+        0
+        25px
+        80px
+        rgba(
+            0,
+            0,
+            0,
+            0.32
+        );
+
+    backdrop-filter:
+
+        blur(
+            20px
+        );
+
+}
+
+
+/* =====================================================
+   CLOSE BUTTON
+===================================================== */
+
+.close-button {
+
+    position: absolute;
+
+    top: 24px;
+
+    right: 24px;
+
+    width: 54px;
+
+    height: 54px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+
+        #f3f3f3;
+
+    border:
+
+        1px solid
+        #dddddd;
+
+    box-shadow:
+
+        0
+        4px
+        12px
+        rgba(
+            0,
+            0,
+            0,
+            0.12
+        );
+
+    text-decoration: none;
+
+}
+
+
+.close-button span {
+
+    position: absolute;
+
+    width: 20px;
+
+    height: 2px;
+
+    background:
+
+        #667080;
+
+}
+
+
+.close-button span:first-child {
+
+    transform:
+
+        rotate(
+            45deg
+        );
+
+}
+
+
+.close-button span:last-child {
+
+    transform:
+
+        rotate(
+            -45deg
+        );
+
+}
+
+
+.close-button:hover {
+
+    transform:
+
+        scale(
+            1.05
+        );
+
+}
+
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.auth-logo {
+
+    text-align: center;
+
+    margin-bottom: 30px;
+
+}
+
+
+.logo-title {
+
+    font-size: 32px;
+
+    font-weight: 800;
+
+    letter-spacing: 10px;
+
+    color:
+
+        var(--temple-orange);
+
+    margin-left: 10px;
+
+}
+
+
+.logo-subtitle {
+
+    margin-top: 6px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
+    color:
+
+        var(--temple-orange-dark);
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.auth-header {
+
+    text-align: left;
+
+    margin-bottom: 28px;
+
+}
+
+
+.small-heading {
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    letter-spacing: 6px;
+
+    color:
+
+        var(--temple-orange);
+
+    margin-bottom: 15px;
+
+}
+
+
+.auth-header h1 {
+
+    margin: 0;
+
+    font-family: "Noto Sans Devanagari", sans-serif;
+
+    font-size: 46px;
+
+    font-weight: 500;
+
+    color:
+
+        #222b3a;
+
+}
+
+
+.auth-header p {
+
+    margin:
+
+        15px
+        0
+        0;
+
+    font-size: 18px;
+
+    line-height: 1.6;
+
+    color:
+
+        #6d7480;
+
+}
+
+
+/* =====================================================
+   TABS
+===================================================== */
+
+.auth-tabs {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+
+        1fr
+        1fr;
+
+    padding: 6px;
+
+    margin-bottom: 25px;
+
+    border-radius: 18px;
+
+    background:
+
+        #f0f0f0;
+
+}
+
+
+.auth-tab {
+
+    border: none;
+
+    padding:
+
+        15px
+        10px;
+
+    border-radius: 14px;
+
+    background:
+
+        transparent;
+
+    color:
+
+        #687282;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.auth-tab.active {
+
+    color:
+
+        white;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #e36d20,
+            #ff7d35
+        );
+
+    box-shadow:
+
+        0
+        8px
+        20px
+        rgba(
+            224,
+            92,
+            20,
+            0.25
+        );
+
+}
+
+
+/* =====================================================
+   GOOGLE BUTTON
+===================================================== */
+
+.google-button {
+
+    width: 100%;
+
+    min-height: 60px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 15px;
+
+    border-radius: 16px;
+
+    border:
+
+        1px solid
+        #d8dce2;
+
+    background:
+
+        #ffffff;
+
+    color:
+
+        #465263;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+
+        0.2s ease;
+
+}
+
+
+.google-button:hover {
+
+    border-color:
+
+        var(--temple-orange);
+
+    transform:
+
+        translateY(
+            -1px
+        );
+
+    box-shadow:
+
+        0
+        8px
+        20px
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
+
+}
+
+
+.google-button:disabled {
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+}
+
+
+.google-icon {
+
+    width: 27px;
+
+    height: 27px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 50%;
+
+    border:
+
+        2px solid
+        var(--temple-orange);
+
+    color:
+
+        var(--temple-orange);
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+}
+
+
+/* =====================================================
+   DIVIDER
+===================================================== */
+
+.divider {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    margin:
+
+        26px
+        0;
+
+}
+
+
+.divider span {
+
+    flex: 1;
+
+    height: 1px;
+
+    background:
+
+        #dedede;
+
+}
+
+
+.divider p {
+
+    margin: 0;
+
+    white-space: nowrap;
+
+    color:
+
+        #858c98;
+
+    font-size: 14px;
+
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.form-group {
+
+    margin-bottom: 18px;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color:
+
+        #4b5563;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+
+.form-group input {
+
+    width: 100%;
+
+    height: 58px;
+
+    padding:
+
+        0
+        18px;
+
+    border-radius: 16px;
+
+    border:
+
+        1px solid
+        #d7dbe1;
+
+    outline: none;
+
+    background:
+
+        #fafafa;
+
+    font-size: 16px;
+
+    color:
+
+        #253044;
+
+    transition:
+
+        0.2s ease;
+
+}
+
+
+.form-group input:focus {
+
+    background:
+
+        #ffffff;
+
+    border-color:
+
+        var(--temple-orange);
+
+    box-shadow:
+
+        0
+        0
+        0
+        4px
+        rgba(
+            230,
+            111,
+            31,
+            0.12
+        );
+
+}
+
+
+.password-wrapper {
+
+    position: relative;
+
+}
+
+
+.password-wrapper input {
+
+    padding-right: 75px;
+
+}
+
+
+.password-toggle {
+
+    position: absolute;
+
+    right: 12px;
+
+    top: 50%;
+
+    transform:
+
+        translateY(
+            -50%
+        );
+
+    border: none;
+
+    background:
+
+        transparent;
+
+    color:
+
+        var(--temple-orange-dark);
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+/* =====================================================
+   FORGOT PASSWORD
+===================================================== */
+
+.forgot-password-container {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin:
+
+        -4px
+        0
+        22px;
+
+}
+
+
+.forgot-password {
+
+    border: none;
+
+    background:
+
+        transparent;
+
+    color:
+
+        var(--temple-orange-dark);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+/* =====================================================
+   SUBMIT BUTTON
+===================================================== */
+
+.submit-button {
+
+    width: 100%;
+
+    min-height: 62px;
+
+    border: none;
+
+    border-radius: 18px;
+
+    cursor: pointer;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #e7681e,
+            #ff7732
+        );
+
+    color:
+
+        white;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+
+    transition:
+
+        0.2s ease;
+
+    box-shadow:
+
+        0
+        12px
+        28px
+        rgba(
+            226,
+            92,
+            19,
+            0.25
+        );
+
+}
+
+
+.submit-button:hover {
+
+    transform:
+
+        translateY(
+            -2px
+        );
+
+}
+
+
+.submit-button:disabled {
+
+    opacity: 0.65;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.login-message {
+
+    min-height: 22px;
+
+    margin-top: 18px;
+
+    text-align: center;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color:
+
+        var(--temple-orange-dark);
+
+}
+
+
+.login-message.error {
+
+    color:
+
+        #b42318;
+
+}
+
+
+.login-message.success {
+
+    color:
+
+        #15803d;
+
+}
+
+
+/* =====================================================
+   SWITCH MODE
+===================================================== */
+
+.switch-mode {
+
+    margin-top: 20px;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    font-size: 15px;
+
+    color:
+
+        #697484;
+
+}
+
+
+.switch-mode button {
+
+    padding: 0;
+
+    border: none;
+
+    background:
+
+        transparent;
+
+    color:
+
+        var(--temple-orange-dark);
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+/* =====================================================
+   HOME LINK
+===================================================== */
+
+.home-link {
+
+    display: block;
+
+    text-align: center;
+
+    margin-top: 22px;
+
+    color:
+
+        #707887;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+}
+
+
+.home-link:hover {
+
+    color:
+
+        var(--temple-orange-dark);
+
+}
+
+
+/* =====================================================
+   HIDDEN
+===================================================== */
+
+.hidden {
+
+    display: none;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media
+(
+    max-width: 600px
+) {
+
+    .auth-page {
+
+        padding:
+
+            20px
+            15px;
+
+        align-items:
+
+            flex-start;
+
+    }
+
+
+    .auth-card {
+
+        margin-top: 20px;
+
+        padding:
+
+            38px
+            25px
+            30px;
+
+        border-radius:
+
+            28px;
+
+    }
+
+
+    .auth-header h1 {
+
+        font-size:
+
+            40px;
+
+    }
+
+
+    .auth-header p {
+
+        font-size:
+
+            16px;
+
+    }
+
+
+    .small-heading {
+
+        letter-spacing:
+
+            4px;
+
+    }
+
+
+    .close-button {
+
+        top:
+
+            18px;
+
+        right:
+
+            18px;
+
+        width:
+
+            48px;
+
+        height:
+
+            48px;
+
+    }
+
+
+    .switch-mode {
+
+        flex-wrap:
+
+            wrap;
+
+    }
+
+}
+
+
+@media
+(
+    max-width: 380px
+) {
+
+    .auth-card {
+
+        padding:
+
+            32px
+            18px
+            25px;
+
+    }
+
+
+    .auth-header h1 {
+
+        font-size:
+
+            34px;
+
+    }
+
+
+    .divider p {
+
+        font-size:
+
+            12px;
+
+    }
+
+}

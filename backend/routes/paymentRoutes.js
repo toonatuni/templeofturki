@@ -13,8 +13,11 @@ const router = express.Router();
 
 function getUpiConfig() {
     return {
-        id: process.env.UPI_ID || "",
-        name: process.env.UPI_PAYEE_NAME || "Dhiraj Kumar"
+        id: String(process.env.UPI_ID || "").trim(),
+
+        name: String(
+            process.env.UPI_PAYEE_NAME || "TOT - Temple of Turki"
+        ).trim()
     };
 }
 
@@ -38,8 +41,10 @@ router.get("/payments/upi-config", (req, res) => {
 
         }
 
+
         res.json({
             success: true,
+
             data: config
         });
 
@@ -49,7 +54,7 @@ router.get("/payments/upi-config", (req, res) => {
 
         res.status(500).json({
             success: false,
-            message: error.message
+            message: "Failed to load UPI configuration"
         });
 
     }
@@ -58,12 +63,14 @@ router.get("/payments/upi-config", (req, res) => {
 
 
 // =====================================================
-// CREATE UPI PAYMENT
+// CREATE DONATION + UPI QR
 // =====================================================
 
 router.post(
     "/payments/upi-intent",
+
     requireAuth,
+
     async (req, res) => {
 
         try {
@@ -83,9 +90,9 @@ router.post(
             ).trim();
 
 
-            // -----------------------------------------
+            // =========================================
             // UPI CONFIG
-            // -----------------------------------------
+            // =========================================
 
             const config = getUpiConfig();
 
@@ -93,26 +100,25 @@ router.post(
 
                 return res.status(503).json({
                     success: false,
-                    message:
-                        "UPI_ID is not configured in .env"
+                    message: "UPI_ID is not configured in .env"
                 });
 
             }
 
 
-            // -----------------------------------------
+            // =========================================
             // VALIDATION
-            // Minimum donation = ₹1
-            // -----------------------------------------
+            // =========================================
 
             if (!name) {
 
                 return res.status(400).json({
                     success: false,
-                    message: "Name is required"
+                    message: "Donor name is required"
                 });
 
             }
+
 
             if (!mobile) {
 
@@ -123,50 +129,63 @@ router.post(
 
             }
 
+
+            if (!/^[0-9]{10}$/.test(mobile)) {
+
+                return res.status(400).json({
+                    success: false,
+                    message: "Please enter a valid 10 digit mobile number"
+                });
+
+            }
+
+
             if (
-                !Number.isInteger(amount) ||
+                !Number.isFinite(amount) ||
                 amount < 1 ||
                 amount > 10000000
             ) {
 
                 return res.status(400).json({
                     success: false,
-                    message:
-                        "Donation amount must be between ₹1 and ₹1,00,00,000"
+                    message: "Donation amount must be valid"
                 });
 
             }
 
 
-            // -----------------------------------------
+            // =========================================
             // CREATE DONATION
-            // -----------------------------------------
+            // =========================================
 
-            const donation =
-                await Donation.create({
+            const donation = await Donation.create({
 
-                    userId: req.user.uid,
+                userId: req.user.uid,
 
-                    name: name,
+                name: name,
 
-                    mobile: mobile,
+                mobile: mobile,
 
-                    amount: amount,
+                amount: amount,
 
-                    purpose: purpose,
+                purpose: purpose,
 
-                    status: "pending"
+                status: "pending"
 
-                });
+            });
 
 
-            // -----------------------------------------
-            // UPI PAYMENT LINK
-            // -----------------------------------------
+            // =========================================
+            // CREATE UPI NOTE
+            // =========================================
 
             const note =
                 `TOT Donation ${donation._id}`;
 
+
+            // =========================================
+            // UPI PAYMENT LINK
+            // =========================================
 
             const upiLink =
                 `upi://pay` +
@@ -177,9 +196,9 @@ router.post(
                 `&tn=${encodeURIComponent(note)}`;
 
 
-            // -----------------------------------------
-            // GENERATE QR
-            // -----------------------------------------
+            // =========================================
+            // GENERATE QR CODE
+            // =========================================
 
             const qrCode =
                 await QRCode.toDataURL(
@@ -192,16 +211,16 @@ router.post(
                 );
 
 
-            // -----------------------------------------
+            // =========================================
             // RESPONSE
-            // -----------------------------------------
+            // =========================================
 
             return res.status(201).json({
 
                 success: true,
 
                 message:
-                    "UPI payment details created",
+                    "Donation created successfully",
 
                 data: {
 
@@ -221,10 +240,13 @@ router.post(
                         qrCode,
 
                     amount:
-                        amount,
+                        donation.amount,
 
                     status:
-                        donation.status
+                        donation.status,
+
+                    createdAt:
+                        donation.createdAt
 
                 }
 
@@ -243,139 +265,7 @@ router.post(
 
                 message:
                     error.message ||
-                    "Failed to create UPI payment"
-
-            });
-
-        }
-
-    }
-);
-
-
-// =====================================================
-// SUBMIT UTR
-// =====================================================
-
-router.post(
-    "/payments/upi-utr",
-    requireAuth,
-    async (req, res) => {
-
-        try {
-
-            const utr =
-                String(
-                    req.body.utr || ""
-                ).trim();
-
-
-            const donationId =
-                req.body.donationId;
-
-
-            // -----------------------------------------
-            // VALIDATE UTR
-            // -----------------------------------------
-
-            if (!/^\d{6,30}$/.test(utr)) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Please enter a valid UTR number"
-
-                });
-
-            }
-
-
-            if (!donationId) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Donation ID is required"
-
-                });
-
-            }
-
-
-            // -----------------------------------------
-            // FIND DONATION
-            // -----------------------------------------
-
-            const donation =
-                await Donation.findOneAndUpdate(
-
-                    {
-                        _id: donationId,
-
-                        userId: req.user.uid,
-
-                        status: "pending"
-                    },
-
-                    {
-                        utr: utr
-                    },
-
-                    {
-                        new: true
-                    }
-
-                );
-
-
-            if (!donation) {
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    message:
-                        "Pending donation not found"
-
-                });
-
-            }
-
-
-            // -----------------------------------------
-            // SUCCESS
-            // -----------------------------------------
-
-            return res.json({
-
-                success: true,
-
-                message:
-                    "UTR submitted. Admin verification is pending.",
-
-                data:
-                    donation
-
-            });
-
-        } catch (error) {
-
-            console.error(
-                "UTR Error:",
-                error
-            );
-
-            return res.status(500).json({
-
-                success: false,
-
-                message:
-                    error.message ||
-                    "Failed to submit UTR"
+                    "Failed to create donation"
 
             });
 
@@ -391,7 +281,9 @@ router.post(
 
 router.get(
     "/my-donations",
+
     requireAuth,
+
     async (req, res) => {
 
         try {
@@ -430,7 +322,7 @@ router.get(
                 success: false,
 
                 message:
-                    error.message
+                    "Failed to load donations"
 
             });
 
@@ -441,7 +333,7 @@ router.get(
 
 
 // =====================================================
-// EXPORT ROUTER
+// EXPORT
 // =====================================================
 
 module.exports = router;
