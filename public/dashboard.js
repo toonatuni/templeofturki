@@ -707,7 +707,7 @@ function startDashboard() {
                     if (!user) {
 
                         window.location.href =
-                            "admin-login.html";
+                            "user-login.html";
 
                         return;
 

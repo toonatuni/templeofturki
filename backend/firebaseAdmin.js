@@ -51,7 +51,7 @@ function getFirebaseAdmin() {
 }
 
 async function verifyIdToken(token) {
-    return getAuth(getFirebaseAdmin()).verifyIdToken(token);
+    return getAuth(getFirebaseAdmin()).verifyIdToken(token, true);
 }
 
 function getFirebaseStorageBucket() {

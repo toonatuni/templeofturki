@@ -20,8 +20,17 @@ if (mobileMenuButton && mainNav) {
         "click",
         function () {
 
-            mainNav.classList.toggle(
+            const isOpen = mainNav.classList.toggle(
                 "mobile-menu-open"
+            );
+
+            mobileMenuButton.setAttribute(
+                "aria-expanded",
+                String(isOpen)
+            );
+            mobileMenuButton.setAttribute(
+                "aria-label",
+                isOpen ? "Close menu" : "Open menu"
             );
 
         }
@@ -44,6 +53,17 @@ navLinks.forEach(function (link) {
                 mainNav.classList.remove(
                     "mobile-menu-open"
                 );
+
+                if (mobileMenuButton) {
+                    mobileMenuButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+                    mobileMenuButton.setAttribute(
+                        "aria-label",
+                        "Open menu"
+                    );
+                }
 
             }
 
@@ -69,7 +89,6 @@ const translations = {
         navNotice: "Notice",
         navDonate: "Donate",
         navContact: "Contact",
-        navAdmin: "Admin Login",
 
         heroBadge:
             "Sacred Heritage • Vaishali, Bihar",
@@ -175,9 +194,6 @@ const translations = {
         navContact:
             "संपर्क",
 
-        navAdmin:
-            "एडमिन लॉगिन",
-
         heroBadge:
             "पवित्र विरासत • वैशाली, बिहार",
 
@@ -281,7 +297,6 @@ function applyLanguage(lang) {
         "navNotice",
         "navDonate",
         "navContact",
-        "navAdmin",
 
         "heroBadge",
         "title",
@@ -729,7 +744,9 @@ if (donationForm) {
 
                     if (response.status === 405) {
                         throw new Error(
-                            "Payment API is unavailable at this address. Start the Node server with 'node server.js' and open http://localhost:5000."
+                            ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname)
+                                ? "Payment API is unavailable. Run 'npm start' from the project root and open http://localhost:5000."
+                                : "Payment API is unavailable. Please try again later."
                         );
                     }
 

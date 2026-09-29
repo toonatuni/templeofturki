@@ -1,4 +1,5 @@
 import { auth } from "./firebase.js";
+import { apiUrl } from "./api-url.js";
 
 window.templeApiFetch = async function (url, options = {}) {
 
@@ -18,7 +19,7 @@ window.templeApiFetch = async function (url, options = {}) {
         headers.set("Content-Type", "application/json");
     }
 
-    return fetch(url, {
+    return fetch(apiUrl(url), {
         ...options,
         headers
     });

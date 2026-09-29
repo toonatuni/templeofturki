@@ -76,7 +76,10 @@ router.post("/gallery", requireAuth, upload.single("image"), async (req, res) =>
             uploaderId: req.user.uid,
             uploaderName: req.user.name || req.user.email || "Devotee",
             originalName: req.file.originalname,
-            filePath
+            filePath,
+            category: typeof req.body.category === "string" && req.body.category.trim()
+                ? req.body.category.trim()
+                : "General"
         });
 
         return res.status(201).json({

@@ -13,10 +13,33 @@ const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
 const publicDirectory = path.join(__dirname, "..", "public");
+const allowedOrigins = new Set(
+    String(process.env.FRONTEND_ORIGINS || "")
+        .split(",")
+        .map((origin) => origin.trim())
+        .filter(Boolean)
+);
 
-app.use(cors());
+function isLocalDevelopmentOrigin(origin) {
+    try {
+        const parsedOrigin = new URL(origin);
+        return parsedOrigin.protocol === "http:" &&
+            ["localhost", "127.0.0.1", "[::1]"].includes(parsedOrigin.hostname);
+    } catch {
+        return false;
+    }
+}
+
+app.use(cors({
+    origin: (origin, callback) => {
+        callback(null, !origin || allowedOrigins.has(origin) || isLocalDevelopmentOrigin(origin));
+    }
+}));
 app.use(
     helmet({
+        crossOriginOpenerPolicy: {
+            policy: "same-origin-allow-popups"
+        },
         crossOriginResourcePolicy: {
             policy: "cross-origin"
         },

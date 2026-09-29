@@ -1,4 +1,5 @@
 import { auth } from "./firebase.js";
+import { apiUrl } from "./api-url.js";
 
 import {
     onAuthStateChanged
@@ -55,7 +56,7 @@ window.templeApiFetch = async function (url, options = {}) {
             );
         }
 
-        return fetch(url, {
+        return fetch(apiUrl(url), {
             ...options,
             headers: headers
         });

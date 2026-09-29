@@ -20,4 +20,4 @@ Thumbs.db
 *.lnk
 
 /backend/uploads/*
-!/backend/uploads/.gitkeep
+!/backend/uploads/.gitkeepnpm

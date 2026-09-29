@@ -1,4 +1,5 @@
 import { auth } from "./firebase.js";
+import { apiUrl } from "./api-url.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 let resolveAuth;
@@ -11,7 +12,7 @@ onAuthStateChanged(auth, user => {
     const authLink = document.getElementById("authLink");
     const authStatus = document.getElementById("authStatus");
     if (authLink) {
-        authLink.textContent = user ? "Logout" : "User Login";
+        authLink.textContent = user ? "Logout" : "Sign In";
         authLink.href = user ? "#" : "user-login.html";
         if (user) authLink.onclick = async event => { event.preventDefault(); await signOut(auth); window.location.reload(); };
     }
@@ -31,7 +32,7 @@ window.templeApiFetch = async function (url, options = {}) {
             headers.set("Content-Type", "application/json");
         }
 
-        return fetch(url, { ...options, headers });
+        return fetch(apiUrl(url), { ...options, headers });
     };
 
     const response = await request(false);

@@ -1,4 +1,5 @@
 import { auth } from "./firebase.js";
+import { apiUrl, isLocalPreview } from "./api-url.js";
 
 
 import {
@@ -108,6 +109,78 @@ let currentMode =
 const provider =
     new GoogleAuthProvider();
 
+
+async function redirectAfterAuthentication(
+    user
+) {
+    authMessage.textContent =
+        "Checking account access...";
+
+    const token = await user.getIdToken(true);
+    const profileUrl = apiUrl("/api/admin/profile");
+    const response = await fetch(profileUrl, {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    });
+
+    if (response.status === 403) {
+        window.location.href = "user-dashboard.html";
+        return;
+    }
+
+    if (response.status === 401) {
+        throw new Error(
+            "Your login could not be verified by the server. Please sign in again."
+        );
+    }
+
+    if (response.status === 404) {
+        const contentType = response.headers.get("content-type") || "unknown content type";
+        throw new Error(
+            `Account verification GET ${new URL(profileUrl).pathname} returned HTTP 404 ` +
+            `(${contentType}). Open the app through Express (npm start) or its deployed URL.`
+        );
+    }
+
+    if (!response.ok) {
+        throw new Error(
+            `Could not verify account access (HTTP ${response.status}). Please try again.`
+        );
+    }
+
+    window.location.href = "admin-dashboard.html";
+}
+
+async function signInWithGoogle() {
+    if (isLocalPreview) {
+        authMessage.textContent =
+            "Redirecting to Google sign-in...";
+        await signInWithRedirect(auth, provider);
+        return;
+    }
+
+    try {
+        const result = await signInWithPopup(auth, provider);
+        await redirectAfterAuthentication(result.user);
+    } catch (error) {
+        const canUseRedirect = [
+            "auth/popup-blocked",
+            "auth/operation-not-supported-in-this-environment",
+            "auth/web-storage-unsupported"
+        ].includes(error.code) ||
+            (isLocalPreview && error.code === "auth/popup-closed-by-user");
+
+        if (!canUseRedirect) {
+            throw error;
+        }
+
+        authMessage.textContent =
+            "Popup sign-in is unavailable here. Redirecting to Google...";
+        await signInWithRedirect(auth, provider);
+    }
+}
 
 
 /* =========================================
@@ -317,7 +390,7 @@ authForm.addEventListener(
             try {
 
 
-                await signInWithEmailAndPassword(
+                const result = await signInWithEmailAndPassword(
 
                     auth,
 
@@ -328,19 +401,7 @@ authForm.addEventListener(
                 );
 
 
-                authMessage.textContent =
-                    "Login successful. Redirecting...";
-
-
-                setTimeout(
-                    function () {
-
-                        window.location.href =
-                            "index.html";
-
-                    },
-                    500
-                );
+                await redirectAfterAuthentication(result.user);
 
 
             }
@@ -380,7 +441,7 @@ authForm.addEventListener(
             try {
 
 
-                await createUserWithEmailAndPassword(
+                const result = await createUserWithEmailAndPassword(
 
                     auth,
 
@@ -391,19 +452,7 @@ authForm.addEventListener(
                 );
 
 
-                authMessage.textContent =
-                    "Account created successfully. Redirecting...";
-
-
-                setTimeout(
-                    function () {
-
-                        window.location.href =
-                            "index.html";
-
-                    },
-                    700
-                );
+                await redirectAfterAuthentication(result.user);
 
 
             }
@@ -459,28 +508,7 @@ googleLoginButton.addEventListener(
         try {
 
 
-            await signInWithPopup(
-
-                auth,
-
-                provider
-
-            );
-
-
-            authMessage.textContent =
-                "Google login successful. Redirecting...";
-
-
-            setTimeout(
-                function () {
-
-                    window.location.href =
-                        "index.html";
-
-                },
-                500
-            );
+            await signInWithGoogle();
 
 
         }
@@ -496,65 +524,7 @@ googleLoginButton.addEventListener(
             );
 
 
-            /* POPUP BLOCKED */
-
-            if (
-                error.code ===
-                "auth/popup-blocked"
-            ) {
-
-
-                authMessage.textContent =
-                    "Popup was blocked. Opening Google login page...";
-
-
-                try {
-
-
-                    await signInWithRedirect(
-
-                        auth,
-
-                        provider
-
-                    );
-
-
-                    return;
-
-
-                }
-
-                catch (
-                    redirectError
-                ) {
-
-
-                    console.error(
-                        "Google Redirect Error:",
-                        redirectError
-                    );
-
-
-                    authMessage.textContent =
-                        getFirebaseErrorMessage(
-                            redirectError
-                        );
-
-                }
-
-            }
-
-
-            else {
-
-
-                authMessage.textContent =
-                    getFirebaseErrorMessage(
-                        error
-                    );
-
-            }
+            authMessage.textContent = getFirebaseErrorMessage(error);
 
 
             googleLoginButton.disabled =
@@ -586,19 +556,7 @@ try {
     ) {
 
 
-        authMessage.textContent =
-            "Google login successful. Redirecting...";
-
-
-        setTimeout(
-            function () {
-
-                window.location.href =
-                    "index.html";
-
-            },
-            500
-        );
+        await redirectAfterAuthentication(result.user);
 
     }
 
@@ -738,7 +696,17 @@ function getFirebaseErrorMessage(
         case "auth/unauthorized-domain":
 
             return
-                "This website domain is not authorized in Firebase.";
+                `This website (${window.location.hostname}) is not authorized for Firebase sign-in. Add this host under Firebase Console > Authentication > Settings > Authorized domains.`;
+
+        case "auth/operation-not-allowed":
+
+            return
+                "Google sign-in is not enabled for this Firebase project. Enable the Google provider in Firebase Console > Authentication > Sign-in method.";
+
+        case "auth/operation-not-supported-in-this-environment":
+
+            return
+                "This browser does not support Google popup sign-in. Use a regular browser window and try again.";
 
 
 

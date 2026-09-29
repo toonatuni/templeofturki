@@ -14,6 +14,11 @@ const announcementSchema = new mongoose.Schema(
             trim: true
         },
 
+        isPublished: {
+            type: Boolean,
+            default: true
+        },
+
         date: {
             type: Date,
             default: Date.now
