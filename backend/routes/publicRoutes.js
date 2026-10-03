@@ -5,6 +5,7 @@ const Donation = require("../models/Donation");
 const Booking = require("../models/Booking");
 const { requireAuth } = require("../middleware/auth");
 const { markPresence, getActiveUserCount } = require("../middleware/presence");
+const { isValidName, isValidMobileNumber, normalizeName } = require("../validation/inputValidation");
 
 const router = express.Router();
 
@@ -35,10 +36,11 @@ router.post("/presence", requireAuth, markPresence);
 router.post("/bookings", requireAuth, async (req, res) => {
     try {
         const { userName, mobile, serviceType, serviceName, bookingDate, notes } = req.body;
-        if (!userName || !mobile || !serviceType || !serviceName || !bookingDate) {
-            return res.status(400).json({ success: false, message: "All booking fields are required" });
+        const normalizedUserName = normalizeName(userName);
+        if (!isValidName(normalizedUserName) || !isValidMobileNumber(mobile) || !serviceType || !serviceName || !bookingDate) {
+            return res.status(400).json({ success: false, message: "Enter a valid name and 10-digit mobile number, and complete all booking fields" });
         }
-        const booking = await Booking.create({ userId: req.user.uid, userName, mobile, serviceType, serviceName, bookingDate, notes });
+        const booking = await Booking.create({ userId: req.user.uid, userName: normalizedUserName, mobile, serviceType, serviceName, bookingDate, notes });
         res.status(201).json({ success: true, data: booking });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });

@@ -499,6 +499,9 @@ const donationForm =
     );
 
 let latestReceiptData = null;
+let donationSubmitting = false;
+let donationSubmissionKey = null;
+let donationSubmissionFingerprint = null;
 
 const downloadReceiptButton =
     document.getElementById(
@@ -510,13 +513,13 @@ if (downloadReceiptButton) {
         "click",
         function () {
             if (!latestReceiptData) {
-                alert("Receipt details are not available yet.");
+                alert("Donation record details are not available yet.");
                 return;
             }
 
             const receipt = [
                 "TOT - TEMPLE OF TURKI",
-                "Donation Receipt",
+                "Donation Record",
                 "------------------------------",
                 `Payment ID: ${latestReceiptData.donationId}`,
                 `Donor Name: ${latestReceiptData.name}`,
@@ -524,18 +527,18 @@ if (downloadReceiptButton) {
                 `Amount: Rs. ${latestReceiptData.amount}`,
                 `Payment Mode: UPI`,
                 `UPI ID: ${latestReceiptData.upiId}`,
-                `Status: ${latestReceiptData.status}`,
+                `Status: Pending manual verification`,
                 `Date: ${latestReceiptData.date}`,
                 "",
-                "This receipt confirms that the donation payment was initiated.",
-                "UPI payments may require bank confirmation."
+                "This record confirms that a UPI donation intent was created and a UTR was submitted.",
+                "It is not proof of payment. The donation remains pending until an administrator manually verifies the bank transfer."
             ].join("\n");
 
             const file = new Blob([receipt], { type: "text/plain;charset=utf-8" });
             const downloadUrl = URL.createObjectURL(file);
             const link = document.createElement("a");
             link.href = downloadUrl;
-            link.download = `temple-donation-${latestReceiptData.donationId}.txt`;
+            link.download = `temple-donation-record-${latestReceiptData.donationId}.txt`;
             link.click();
             URL.revokeObjectURL(downloadUrl);
         }
@@ -630,6 +633,13 @@ if (donationForm) {
                 return;
             }
 
+            if (donationSubmitting) {
+                return;
+            }
+            donationSubmitting = true;
+            const submitButton = donationForm.querySelector('[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
+
 
             /* -----------------------------------------
                DONATION DATA
@@ -645,23 +655,44 @@ if (donationForm) {
 
             };
 
+            const fingerprint = JSON.stringify(donation);
+            if (!donationSubmissionKey || donationSubmissionFingerprint !== fingerprint) {
+                donationSubmissionKey = crypto.randomUUID();
+                donationSubmissionFingerprint = fingerprint;
+            }
+            donation.submissionKey = donationSubmissionKey;
+            let guestAccessToken = null;
+
 
             try {
 
                 /* -------------------------------------
-                   AUTHENTICATED FETCH
+                   OPTIONAL-AUTH FETCH
                 ------------------------------------- */
 
                 const fetchFunction =
-                    window.templeApiFetch;
+                    window.templePublicApiFetch;
 
 
                 if (!fetchFunction) {
 
                     throw new Error(
-                        "Payment authentication system load nahi hua. Page refresh karein."
+                        "Payment system did not load. Please refresh the page and try again."
                     );
 
+                }
+
+                const currentUser = window.templeAuthReady
+                    ? await window.templeAuthReady
+                    : window.templeCurrentUser;
+                if (!currentUser) {
+                    const claimKey = `tot:guest-claim:${donationSubmissionKey}`;
+                    guestAccessToken = sessionStorage.getItem(claimKey);
+                    if (!guestAccessToken) {
+                        guestAccessToken = crypto.randomUUID();
+                        sessionStorage.setItem(claimKey, guestAccessToken);
+                    }
+                    donation.guestAccessToken = guestAccessToken;
                 }
 
 
@@ -727,12 +758,6 @@ if (donationForm) {
                 }
 
 
-                console.log(
-                    "UPI Intent Response:",
-                    data
-                );
-
-
                 /* -------------------------------------
                    ERROR CHECK
                 ------------------------------------- */
@@ -757,6 +782,16 @@ if (donationForm) {
 
                     );
 
+                }
+
+                if (
+                    !data.data ||
+                    !/^[a-f\d]{24}$/i.test(String(data.data.donationId || "")) ||
+                    !data.data.upiId ||
+                    !data.data.upiLink ||
+                    !data.data.qrCode
+                ) {
+                    throw new Error("The payment service returned incomplete donation details. Please try again.");
                 }
 
 
@@ -786,6 +821,12 @@ if (donationForm) {
                     document.getElementById(
                         "upiOpenLink"
                     );
+                const utrInput = document.getElementById("donationUtr");
+                const utrStatus = document.getElementById("utrSubmissionStatus");
+
+                if (downloadReceiptButton) downloadReceiptButton.hidden = true;
+                if (utrInput) utrInput.value = "";
+                if (utrStatus) utrStatus.textContent = "";
 
 
                 /* -------------------------------------
@@ -843,20 +884,13 @@ if (donationForm) {
                     upiOpenLink.href =
                         data.data.upiLink;
 
-                    if (downloadReceiptButton) {
-                        upiOpenLink.onclick = function () {
-                            window.setTimeout(function () {
-                                const completed = window.confirm(
-                                    "Kya aapne UPI app mein payment complete kar diya hai?"
-                                );
+                }
 
-                                if (completed) {
-                                    downloadReceiptButton.hidden = false;
-                                }
-                            }, 500);
-                        };
-                    }
-
+                if (guestAccessToken) {
+                    sessionStorage.setItem(
+                        `tot:guest-donation:${data.data.donationId}`,
+                        guestAccessToken
+                    );
                 }
 
                 latestReceiptData = {
@@ -865,9 +899,67 @@ if (donationForm) {
                     mobile: mobile,
                     amount: data.data.amount,
                     upiId: data.data.upiId,
-                    status: data.data.status,
+                    status: "Pending manual verification",
                     date: new Date().toLocaleString()
                 };
+
+                const utrForm = document.getElementById("utrSubmissionForm");
+                const submitUtrButton = document.getElementById("submitUtrButton");
+                if (utrForm) {
+                    utrForm.onsubmit = async function (utrEvent) {
+                        utrEvent.preventDefault();
+                        if (!utrForm.reportValidity()) return;
+
+                        const utr = utrInput.value.trim().toUpperCase();
+                        if (!/^[A-Z0-9]{6,32}$/.test(utr)) {
+                            utrStatus.textContent = "Enter a valid UTR/reference number using 6–32 letters or digits.";
+                            utrInput.focus();
+                            return;
+                        }
+
+                        const storedGuestToken = sessionStorage.getItem(
+                            `tot:guest-donation:${data.data.donationId}`
+                        );
+                        if (!currentUser && !storedGuestToken) {
+                            utrStatus.textContent = "This guest donation can only be verified from the browser session where it was created.";
+                            return;
+                        }
+
+                        submitUtrButton.disabled = true;
+                        utrStatus.textContent = "Submitting UTR...";
+                        try {
+                            const utrResponse = await fetchFunction(
+                                `/api/payments/donations/${encodeURIComponent(data.data.donationId)}/utr`,
+                                {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({
+                                        utr,
+                                        ...(storedGuestToken ? { guestAccessToken: storedGuestToken } : {})
+                                    })
+                                }
+                            );
+                            let utrPayload;
+                            try {
+                                utrPayload = await utrResponse.json();
+                            } catch {
+                                throw new Error(`UTR submission service returned an invalid response (HTTP ${utrResponse.status}).`);
+                            }
+                            if (!utrResponse.ok || !utrPayload.success) {
+                                throw new Error(utrPayload.message || `UTR submission failed (HTTP ${utrResponse.status}).`);
+                            }
+
+                            latestReceiptData.status = "Pending manual verification";
+                            utrStatus.textContent = "UTR submitted. Your donation remains pending until an administrator manually verifies the transfer.";
+                            if (downloadReceiptButton) downloadReceiptButton.hidden = false;
+                        } catch (error) {
+                            console.error("UTR submission failed:", error);
+                            utrStatus.textContent = error.message || "UTR submission failed. Please try again.";
+                        } finally {
+                            submitUtrButton.disabled = false;
+                        }
+                    };
+                }
 
 
                 /* -------------------------------------
@@ -875,6 +967,8 @@ if (donationForm) {
                 ------------------------------------- */
 
                 donationForm.reset();
+                donationSubmissionKey = null;
+                donationSubmissionFingerprint = null;
 
 
                 /* -------------------------------------
@@ -909,6 +1003,9 @@ if (donationForm) {
 
                 );
 
+            } finally {
+                donationSubmitting = false;
+                if (submitButton) submitButton.disabled = false;
             }
 
         }

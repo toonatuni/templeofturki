@@ -13,8 +13,8 @@ import {
     signInWithPopup,
 
     signInWithRedirect,
-
-    getRedirectResult
+    getRedirectResult,
+    onAuthStateChanged
 
 }
 
@@ -109,24 +109,47 @@ let currentMode =
 const provider =
     new GoogleAuthProvider();
 
+let authActionInProgress = false;
+let initialAuthStateHandled = false;
+const accessChecks = new Map();
+
 
 async function redirectAfterAuthentication(
     user
 ) {
+    if (accessChecks.has(user.uid)) {
+        return accessChecks.get(user.uid);
+    }
+
+    const accessCheck = checkAccountAccess(user);
+    accessChecks.set(user.uid, accessCheck);
+    try {
+        await accessCheck;
+    } finally {
+        accessChecks.delete(user.uid);
+    }
+}
+
+async function checkAccountAccess(user) {
     authMessage.textContent =
         "Checking account access...";
 
     const token = await user.getIdToken(true);
     const profileUrl = apiUrl("/api/admin/profile");
-    const response = await fetch(profileUrl, {
-        method: "GET",
-        headers: {
-            "Authorization": "Bearer " + token
-        }
-    });
+    let response;
+    try {
+        response = await fetch(profileUrl, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
+    } catch {
+        throw new Error("Unable to reach the account verification service. Check your connection and try again.");
+    }
 
     if (response.status === 403) {
-        window.location.href = "user-dashboard.html";
+        window.location.replace("user-dashboard.html");
         return;
     }
 
@@ -150,14 +173,45 @@ async function redirectAfterAuthentication(
         );
     }
 
-    window.location.href = "admin-dashboard.html";
+    let profile;
+    try {
+        profile = await response.json();
+    } catch {
+        throw new Error("The account verification service returned an invalid response. Please try again.");
+    }
+    if (
+        profile?.success !== true ||
+        profile.admin?.isAdmin !== true ||
+        profile.admin?.uid !== user.uid
+    ) {
+        throw new Error("The account verification service could not confirm administrator access.");
+    }
+
+    window.location.replace("admin-dashboard.html");
 }
 
+onAuthStateChanged(auth, (user) => {
+    if (initialAuthStateHandled) return;
+    initialAuthStateHandled = true;
+    if (!user || authActionInProgress) return;
+
+    redirectAfterAuthentication(user).catch((error) => {
+        console.error("Existing session verification failed:", error);
+        authMessage.textContent = getFirebaseErrorMessage(error);
+    });
+});
+
 async function signInWithGoogle() {
+    authActionInProgress = true;
     if (isLocalPreview) {
         authMessage.textContent =
             "Redirecting to Google sign-in...";
-        await signInWithRedirect(auth, provider);
+        try {
+            await signInWithRedirect(auth, provider);
+        } catch (error) {
+            authActionInProgress = false;
+            throw error;
+        }
         return;
     }
 
@@ -173,12 +227,18 @@ async function signInWithGoogle() {
             (isLocalPreview && error.code === "auth/popup-closed-by-user");
 
         if (!canUseRedirect) {
+            authActionInProgress = false;
             throw error;
         }
 
         authMessage.textContent =
             "Popup sign-in is unavailable here. Redirecting to Google...";
-        await signInWithRedirect(auth, provider);
+        try {
+            await signInWithRedirect(auth, provider);
+        } catch (redirectError) {
+            authActionInProgress = false;
+            throw redirectError;
+        }
     }
 }
 
@@ -329,6 +389,7 @@ authForm.addEventListener(
         if (
             !email
         ) {
+            authActionInProgress = false;
 
 
             authMessage.textContent =
@@ -344,6 +405,7 @@ authForm.addEventListener(
         if (
             !password
         ) {
+            authActionInProgress = false;
 
 
             authMessage.textContent =
@@ -359,6 +421,7 @@ authForm.addEventListener(
         if (
             password.length < 6
         ) {
+            authActionInProgress = false;
 
 
             authMessage.textContent =
@@ -373,6 +436,7 @@ authForm.addEventListener(
 
         /* DISABLE BUTTON */
 
+        authActionInProgress = true;
         submitButton.disabled =
             true;
 
@@ -422,6 +486,7 @@ authForm.addEventListener(
                         error
                     );
 
+                authActionInProgress = false;
 
                 submitButton.disabled =
                     false;
@@ -473,6 +538,7 @@ authForm.addEventListener(
                         error
                     );
 
+                authActionInProgress = false;
 
                 submitButton.disabled =
                     false;
@@ -555,7 +621,7 @@ try {
         result
     ) {
 
-
+        authActionInProgress = true;
         await redirectAfterAuthentication(result.user);
 
     }
@@ -577,6 +643,7 @@ catch (
         getFirebaseErrorMessage(
             error
         );
+    authActionInProgress = false;
 
 }
 

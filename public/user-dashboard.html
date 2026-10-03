@@ -11,6 +11,9 @@
 
     <title>Temple of Turki - User Dashboard</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
 </head>
@@ -105,7 +108,7 @@
                 </h2>
 
                 <p>
-                    <strong>Email:</strong>
+                    <strong>Account:</strong>
                 </p>
 
                 <p id="userEmail">
@@ -175,13 +178,8 @@
                         and payment details.
                     </p>
 
-                    <button
-                        class="secondary-btn"
-                        type="button">
-
-                        View History
-
-                    </button>
+                    <div id="donationHistoryStatus" role="status">Loading donation history...</div>
+                    <div class="donation-history-list" id="donationHistory"></div>
 
                 </article>
 

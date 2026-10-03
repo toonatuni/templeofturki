@@ -7,6 +7,7 @@ const GalleryImage = require("../models/GalleryImage");
 const Event = require("../models/Event");
 const { getAuth } = require("firebase-admin/auth");
 const { getFirebaseAdmin, getFirebaseStorageBucket } = require("../firebaseAdmin");
+const { isValidName, isValidMobileNumber, normalizeName } = require("../validation/inputValidation");
 const fs = require("fs/promises");
 const path = require("path");
 
@@ -162,6 +163,12 @@ router.get(
     async (req, res) => {
 
         try {
+            if (!isValidObjectId(req.params.id)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid donation ID"
+                });
+            }
 
             const donation =
                 await Donation
@@ -184,13 +191,17 @@ router.get(
 
             }
 
+            const firebaseUsers = await getFirebaseUsersByUid([donation.userId]);
 
             return res.json({
 
                 success: true,
 
                 data:
-                    donation
+                    {
+                        ...donation,
+                        email: firebaseUsers.get(donation.userId)?.email || ""
+                    }
 
             });
 
@@ -239,10 +250,16 @@ router.patch(
     async (req, res) => {
 
         try {
+            if (!isValidObjectId(req.params.id)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid donation ID"
+                });
+            }
 
             const status =
                 String(
-                    req.body.status || ""
+                    req.body?.status || ""
                 )
                     .trim()
                     .toLowerCase();
@@ -286,10 +303,27 @@ router.patch(
             // UPDATE DATA
             // ==========================================
 
+            const donationRecord = await Donation.findById(req.params.id);
+            if (!donationRecord) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Donation not found"
+                });
+            }
+
+            if (status === "paid" && !donationRecord.utr) {
+                return res.status(409).json({
+                    success: false,
+                    message: "A submitted UTR is required before manual payment verification"
+                });
+            }
+
+            const verifiedAt = status === "paid" ? new Date() : null;
             const updateData = {
 
-                status:
-                    status
+                status,
+                verifiedBy: status === "paid" ? req.user.uid : null,
+                verifiedAt
 
             };
 
@@ -301,7 +335,7 @@ router.patch(
             ) {
 
                 updateData.paidAt =
-                    new Date();
+                    verifiedAt;
 
             }
 
@@ -370,7 +404,7 @@ router.patch(
 
             console.error(
                 "Update Donation Error:",
-                error
+                error.code || error.name
             );
 
 
@@ -408,6 +442,12 @@ router.delete(
     async (req, res) => {
 
         try {
+            if (!isValidObjectId(req.params.id)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid donation ID"
+                });
+            }
 
             const donation =
                 await Donation
@@ -670,13 +710,32 @@ router.patch("/users/:uid", async (req, res) => {
     const update = {};
     for (const field of ["displayName", "email", "phoneNumber"]) {
         if (req.body[field] !== undefined) {
+            if (field === "displayName") {
+                const displayName = normalizeName(req.body[field]);
+                if (!isValidName(displayName)) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Enter a name using English or Hindi letters and spaces only"
+                    });
+                }
+                update.displayName = displayName;
+                continue;
+            }
             if (typeof req.body[field] !== "string" || !req.body[field].trim()) {
                 return res.status(400).json({
                     success: false,
                     message: `${field} must be a non-empty string`
                 });
             }
-            update[field] = req.body[field].trim();
+            if (field === "phoneNumber" && !isValidMobileNumber(req.body[field].trim())) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Phone number must contain exactly 10 digits"
+                });
+            }
+            update[field] = field === "phoneNumber"
+                ? `+91${req.body[field].trim()}`
+                : req.body[field].trim();
         }
     }
     if (req.body.disabled !== undefined) {

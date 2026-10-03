@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@100..900&display=swap");
-
 /* =====================================================
    ROOT
 ===================================================== */
 
 :root {
+
+    --site-font: "Poppins", "Noto Sans Devanagari", sans-serif;
 
     --temple-orange: #e66f1f;
 
@@ -22,6 +22,10 @@
 
     --border-color: #d9dce1;
 
+}
+
+*, *::before, *::after {
+    font-family: var(--site-font);
 }
 
 
@@ -48,8 +52,6 @@ body {
     margin: 0;
 
     min-height: 100vh;
-
-    font-family: "Noto Sans Devanagari", sans-serif;
 
     color:
         var(--text-dark);
@@ -393,8 +395,6 @@ body {
 .auth-header h1 {
 
     margin: 0;
-
-    font-family: "Noto Sans Devanagari", sans-serif;
 
     font-size: 46px;
 

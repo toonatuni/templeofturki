@@ -9,11 +9,45 @@ const donationSchema =
 
             type: String,
 
-            required: true,
+            default: null,
 
             index: true
 
         },
+
+        submissionKey: {
+
+            type: String,
+
+            trim: true
+
+        },
+
+        guestAccessTokenHash: {
+
+            type: String,
+
+            select: false
+
+        },
+
+        utr: {
+
+            type: String,
+
+            trim: true,
+
+            uppercase: true,
+            maxlength: 32,
+            match: /^[A-Z0-9]{6,32}$/
+
+        },
+
+        utrSubmittedAt: Date,
+
+        verifiedBy: String,
+
+        verifiedAt: Date,
 
 
         name: {
@@ -82,6 +116,22 @@ const donationSchema =
         }
 
     });
+
+donationSchema.index(
+    { submissionKey: 1 },
+    {
+        unique: true,
+        partialFilterExpression: { submissionKey: { $type: "string" } }
+    }
+);
+
+donationSchema.index(
+    { utr: 1 },
+    {
+        unique: true,
+        partialFilterExpression: { utr: { $type: "string" } }
+    }
+);
 
 
 module.exports =

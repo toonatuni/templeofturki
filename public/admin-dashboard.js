@@ -113,8 +113,8 @@ async function apiRequest(url, options = {}) {
     }
 
     if (response.status === 403) {
-        window.location.replace("user-dashboard.html");
-        throw new Error("Administrator access is required.");
+        window.setTimeout(() => window.location.replace("user-dashboard.html"), 1500);
+        throw new Error("Access Denied: administrator authorization is required. Returning to your account.");
     }
     if (response.status === 401) {
         await signOut(auth);
@@ -173,22 +173,26 @@ function statCard(label, value, iconName) {
 }
 
 function donationRows(donations, paymentView = false) {
-    if (!donations.length) return `<tr><td colspan="9" class="admin-empty">No donation records found.</td></tr>`;
+    if (!donations.length) return `<tr><td colspan="10" class="admin-empty">No donation records found.</td></tr>`;
     return donations.map((donation) => {
         const id = escapeHtml(donation._id);
         const status = String(donation.status || "pending");
         return `<tr>
-            <td><strong>${escapeHtml(donation.name)}</strong><span class="admin-subtext">${escapeHtml(donation.userId)}</span></td>
+            <td><strong>${escapeHtml(donation.name)}</strong><span class="admin-subtext">${escapeHtml(donation.userId || "Guest donation")}</span></td>
             <td>${escapeHtml(donation.email || "—")}</td>
             <td>${escapeHtml(donation.mobile || "—")}</td>
             <td>${formatMoney(donation.amount)}</td>
-            <td><span class="admin-badge neutral">Not stored</span></td>
-            <td><span class="admin-badge neutral">Not stored</span></td>
+            <td><span class="admin-badge neutral">UPI intent</span></td>
+            <td>${donation.utr ? `<span class="admin-badge neutral">${escapeHtml(donation.utr)}</span>` : `<span class="admin-badge neutral">Not submitted</span>`}</td>
             <td>${escapeHtml(donation.purpose || "—")}</td>
             <td>${formatDate(donation.createdAt)}</td>
             <td>${badge(status)}</td>
             <td><div class="admin-actions">
-                ${status === "pending" ? `<button class="admin-button accent" data-action="donation-status" data-id="${id}" data-status="paid">${icon("check")}Verify</button>` : ""}
+                <button class="admin-button secondary" data-action="donation-view" data-id="${id}">${icon("user")}View</button>
+                <select class="admin-select" data-donation-status data-id="${id}" aria-label="Set donation status">
+                    ${["pending", "paid", "failed"].map((option) => `<option value="${option}" ${status === option ? "selected" : ""} ${option === "paid" && !donation.utr ? "disabled" : ""}>${option}</option>`).join("")}
+                </select>
+                <button class="admin-button accent" data-action="donation-status" data-id="${id}">${icon("check")}Update</button>
                 <button class="admin-button danger" data-action="donation-delete" data-id="${id}" aria-label="Delete donation">${icon("trash")}Delete</button>
             </div></td>
         </tr>`;
@@ -298,21 +302,21 @@ async function renderDonations(paymentView) {
     const donations = payload.data || [];
     const title = paymentView ? "Payment records" : "Donation management";
     const intro = paymentView
-        ? "The current backend stores payment records as donations; transaction IDs, payment methods, and external gateway history are not persisted."
-        : "Only fields stored in the donation database are shown. Verify marks a pending record as paid.";
+        ? "UPI transfers are not verified automatically. Review each submitted UTR against the bank record before marking a donation paid."
+        : "Donations remain pending until an administrator manually verifies the transfer. A submitted UTR is not proof of payment.";
     content.innerHTML = `
         <div class="admin-page-heading"><div><h2>${title}</h2><p>${escapeHtml(intro)}</p></div><button class="admin-button secondary" data-action="refresh">${icon("refresh")}Refresh</button></div>
         <section class="admin-panel">
             <div class="admin-panel-head"><h3>${paymentView ? "Recorded payments / donation intents" : "All donation records"} (${donations.length})</h3>
                 <div class="admin-toolbar"><input id="donationSearch" class="admin-field" type="search" placeholder="Search donor, phone or user ID" aria-label="Search donation records"></div>
             </div>
-            <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Donor / User ID</th><th>Email</th><th>Phone</th><th>Amount</th><th>Payment Method</th><th>Transaction ID</th><th>Purpose</th><th>Date</th><th>Status / Actions</th></tr></thead><tbody id="donationRows">${donationRows(donations, paymentView)}</tbody></table></div>
+            <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Donor / User ID</th><th>Email</th><th>Phone</th><th>Amount</th><th>Payment Method</th><th>Transaction ID</th><th>Purpose</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="donationRows">${donationRows(donations, paymentView)}</tbody></table></div>
         </section>`;
     const search = document.getElementById("donationSearch");
     search.addEventListener("input", () => {
         const value = search.value.trim().toLowerCase();
         const filtered = donations.filter((donation) =>
-            [donation.name, donation.mobile, donation.userId, donation.purpose, donation.status]
+            [donation.name, donation.mobile, donation.userId, donation.purpose, donation.status, donation.utr]
                 .some((field) => String(field || "").toLowerCase().includes(value))
         );
         document.getElementById("donationRows").innerHTML = donationRows(filtered, paymentView);
@@ -470,7 +474,38 @@ function renderDetails(user) {
     dialog.showModal();
 }
 
+function renderDonationDetails(donation) {
+    document.getElementById("userDialogTitle").textContent = "Donation details";
+    dialogBody.innerHTML = `
+        <section class="admin-dialog-section"><h3>Donor and payment information</h3>
+            <div class="admin-details-grid">
+                <div class="admin-detail"><span>Donor</span><strong>${escapeHtml(donation.name || "—")}</strong></div>
+                <div class="admin-detail"><span>Account</span><strong>${escapeHtml(donation.userId || "Guest donation")}</strong></div>
+                <div class="admin-detail"><span>Email</span><strong>${escapeHtml(donation.email || "—")}</strong></div>
+                <div class="admin-detail"><span>Mobile</span><strong>${escapeHtml(donation.mobile || "—")}</strong></div>
+                <div class="admin-detail"><span>Amount</span><strong>${formatMoney(donation.amount)}</strong></div>
+                <div class="admin-detail"><span>Status</span><strong>${badge(donation.status)}</strong></div>
+                <div class="admin-detail"><span>UPI UTR / reference</span><strong>${escapeHtml(donation.utr || "Not submitted")}</strong></div>
+                <div class="admin-detail"><span>UTR submitted at</span><strong>${formatDate(donation.utrSubmittedAt)}</strong></div>
+                <div class="admin-detail"><span>Purpose</span><strong>${escapeHtml(donation.purpose || "—")}</strong></div>
+                <div class="admin-detail"><span>Donation date</span><strong>${formatDate(donation.createdAt)}</strong></div>
+                <div class="admin-detail"><span>Manually verified by (Firebase UID)</span><strong>${escapeHtml(donation.verifiedBy || "Not verified")}</strong></div>
+                <div class="admin-detail"><span>Manually verified at</span><strong>${formatDate(donation.verifiedAt)}</strong></div>
+                <div class="admin-detail"><span>Record ID</span><strong>${escapeHtml(donation._id)}</strong></div>
+            </div>
+        </section>`;
+}
+
+async function showDonationDetails(id) {
+    document.getElementById("userDialogTitle").textContent = "Donation details";
+    dialogBody.innerHTML = `<div class="admin-loading">Loading donation details…</div>`;
+    dialog.showModal();
+    const payload = await apiRequest(`/api/admin/donations/${encodeURIComponent(id)}`);
+    renderDonationDetails(payload.data);
+}
+
 async function showUserDetails(uid) {
+    document.getElementById("userDialogTitle").textContent = "User details";
     const payload = await apiRequest(`/api/admin/users/${encodeURIComponent(uid)}`);
     renderDetails(payload.data);
 }
@@ -478,11 +513,12 @@ async function showUserDetails(uid) {
 async function editUser(uid) {
     const payload = await apiRequest(`/api/admin/users/${encodeURIComponent(uid)}`);
     const user = payload.data;
+    const phoneNumber = String(user.phoneNumber || "").replace(/^\+91/, "").replace(/\D/g, "").slice(-10);
     dialogBody.innerHTML = `
         <form id="userEditForm" class="admin-edit-form">
-            <label>Display name<input class="admin-field" name="displayName" maxlength="120" required value="${escapeHtml(user.displayName)}"></label>
+            <label>Display name<input class="admin-field" name="displayName" data-validate-name maxlength="100" required value="${escapeHtml(user.displayName)}"></label>
             <label>Email<input class="admin-field" name="email" type="email" required value="${escapeHtml(user.email)}"></label>
-            <label>Phone<input class="admin-field" name="phoneNumber" type="tel" value="${escapeHtml(user.phoneNumber)}"></label>
+            <label>Phone<input class="admin-field" name="phoneNumber" type="tel" data-validate-mobile inputmode="numeric" maxlength="10" value="${escapeHtml(phoneNumber)}"></label>
             <div class="admin-toolbar" style="align-self:end"><button class="admin-button accent" type="submit">${icon("check")}Save user</button><button class="admin-button secondary" type="button" data-close-dialog>Cancel</button></div>
         </form>
         <p class="admin-settings-note">Firebase permits editing these profile fields. Passwords, provider credentials, and admin authorization are not exposed here.</p>`;
@@ -558,6 +594,10 @@ async function handleAction(button) {
         try { await showUserDetails(id); } catch (error) { showToast(error.message, true); }
         return;
     }
+    if (action === "donation-view") {
+        try { await showDonationDetails(id); } catch (error) { showToast(error.message, true); }
+        return;
+    }
     if (action === "user-edit") {
         try { await editUser(id); } catch (error) { showToast(error.message, true); }
         return;
@@ -587,8 +627,11 @@ async function handleAction(button) {
     if (action === "donation-status" || action === "donation-delete") {
         if (action === "donation-delete" && !window.confirm("Permanently delete this donation record?")) return;
         try {
+            const selectedStatus = button.closest("tr")?.querySelector("[data-donation-status]")?.value;
+            if (action === "donation-status" && selectedStatus === "paid" &&
+                !window.confirm("Only continue after checking this UTR against the temple bank record. This will manually mark the donation as paid.")) return;
             await apiRequest(`/api/admin/donations/${encodeURIComponent(id)}`, action === "donation-status"
-                ? { method: "PATCH", body: JSON.stringify({ status: button.dataset.status }) }
+                ? { method: "PATCH", body: JSON.stringify({ status: selectedStatus }) }
                 : { method: "DELETE" });
             showToast(action === "donation-status" ? "Donation status updated." : "Donation deleted.");
             await loadView(currentView);

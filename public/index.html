@@ -7,6 +7,9 @@
 
     <title>TOT - Temple of Turki</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -36,12 +39,26 @@
             <span class="logo-main">T<span class="logo-accent">O</span>T</span>
         </a>
 
-        <a
-            href="user-login.html"
-            class="login-button"
-            id="authLink">
-            Sign In
-        </a>
+        <div class="profile-menu" id="profileMenu">
+            <a
+                href="user-login.html"
+                class="login-button"
+                id="authLink">
+                Sign In
+            </a>
+            <button
+                type="button"
+                class="profile-button"
+                id="profileButton"
+                aria-label="User profile menu"
+                aria-expanded="false"
+                aria-controls="profileDropdown"
+                hidden></button>
+            <div class="profile-dropdown" id="profileDropdown" hidden>
+                <button type="button" id="profileLogout">Logout</button>
+                <p id="profileMenuMessage" role="status"></p>
+            </div>
+        </div>
 
         <nav id="mainNav" aria-label="Main navigation">
 
@@ -117,10 +134,6 @@
     <div class="container hero-inner">
 
         <div class="hero-content">
-
-            <span class="hero-label" id="heroBadge">
-                Sacred Heritage • Vaishali, Bihar
-            </span>
 
             <h1 id="title">
                 A spiritual home for devotion, service and peace.
@@ -636,8 +649,9 @@
                     <input
                         type="text"
                         id="name"
-                        pattern="[A-Za-z\s]+"
-                        title="Please enter a valid name"
+                        data-validate-name
+                        maxlength="100"
+                        title="Enter a name using English or Hindi letters and spaces only."
                         placeholder="Enter your name"
                         required>
 
@@ -653,8 +667,10 @@
                     <input
                         type="tel"
                         id="mobile"
-                        pattern="[0-9]{10}"
-        title="Mobile number must be exactly 10 digits"
+                        data-validate-mobile
+                        inputmode="numeric"
+                        maxlength="10"
+                        title="Enter exactly 10 digits for the mobile number."
                         placeholder="Enter mobile number"
                         required>
 
@@ -751,12 +767,37 @@
                     Open UPI App
                 </a>
 
+                <p class="form-description" id="upiVerificationNotice">
+                    Payment is not confirmed automatically. After completing your UPI transfer, submit the UTR/reference number below. Guest donors must submit it before leaving or refreshing this page. The donation remains pending until an administrator manually verifies it.
+                </p>
+
+                <form id="utrSubmissionForm">
+                    <div class="form-group">
+                        <label for="donationUtr">UPI UTR / transaction reference</label>
+                        <input
+                            id="donationUtr"
+                            name="utr"
+                            type="text"
+                            minlength="6"
+                            maxlength="32"
+                            pattern="[A-Za-z0-9]{6,32}"
+                            autocomplete="off"
+                            aria-describedby="utrSubmissionStatus"
+                            required>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitUtrButton">
+                        Submit UTR for Manual Verification
+                    </button>
+                </form>
+
+                <p id="utrSubmissionStatus" role="status" aria-live="polite"></p>
+
                 <button
                     type="button"
                     id="downloadReceiptButton"
                     class="submit-btn"
                     hidden>
-                    Download Receipt
+                    Download Donation Record
                 </button>
 
 
@@ -790,7 +831,7 @@
             <div class="contact-details">
 
                 <p>
-                    Gram Bardih Turki, Patepur,
+                    Village Bardiha Turki, Patepur,
                     Vaishali, Bihar
                 </p>
 
@@ -914,8 +955,7 @@
 
 <!-- ================= SCRIPTS ================= -->
 <script src="script.js"></script>
-
-<script type="module" src="firebase.js"></script>
+<script src="input-validation.js"></script>
 
 <script type="module" src="auth-client.js"></script>
 

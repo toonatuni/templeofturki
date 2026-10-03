@@ -11,10 +11,9 @@
 
     <title>User Account | Temple of Turki</title>
 
-    <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@100..900&display=swap"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap">
 
     <style>
 
@@ -23,6 +22,8 @@
         ========================================= */
 
         :root {
+
+            --site-font: "Poppins", "Noto Sans Devanagari", sans-serif;
 
             --temple-orange: #e86f20;
 
@@ -52,6 +53,7 @@
         * {
 
             box-sizing: border-box;
+            font-family: var(--site-font);
 
         }
 
@@ -61,8 +63,6 @@
             margin: 0;
 
             min-height: 100vh;
-
-            font-family: "Noto Sans Devanagari", sans-serif;
 
             color:
                 var(--text-dark);
@@ -294,8 +294,6 @@
                 28px
                 0
                 12px;
-
-            font-family: "Noto Sans Devanagari", sans-serif;
 
             font-size:
                 58px;

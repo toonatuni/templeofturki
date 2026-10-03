@@ -11,6 +11,53 @@ function getBearerToken(req) {
         : null;
 }
 
+function sendAuthenticationError(res, error) {
+    if (
+        error.message &&
+        error.message.includes("FIREBASE_SERVICE_ACCOUNT_JSON")
+    ) {
+        return res.status(500).json({
+            success: false,
+            message: "Server Firebase authentication is not configured."
+        });
+    }
+
+    if (error.code === "auth/id-token-expired") {
+        return res.status(401).json({
+            success: false,
+            message: "Login session expired. Please login again."
+        });
+    }
+
+    return res.status(401).json({
+        success: false,
+        message: "Invalid or expired login"
+    });
+}
+
+async function optionalAuth(req, res, next) {
+    const authorization = req.get("authorization");
+    if (!authorization) {
+        return next();
+    }
+
+    const token = getBearerToken(req);
+    if (!token) {
+        return res.status(401).json({
+            success: false,
+            message: "Invalid authorization header"
+        });
+    }
+
+    try {
+        req.user = await verifyIdToken(token);
+        return next();
+    } catch (error) {
+        console.error("Optional auth verification failed:", error.code, error.message);
+        return sendAuthenticationError(res, error);
+    }
+}
+
 
 async function requireAuth(req, res, next) {
 
@@ -44,41 +91,7 @@ async function requireAuth(req, res, next) {
         );
 
 
-        if (
-            error.message &&
-            error.message.includes(
-                "FIREBASE_SERVICE_ACCOUNT_JSON"
-            )
-        ) {
-
-            return res.status(500).json({
-                success: false,
-                message:
-                    "Server Firebase authentication is not configured."
-            });
-
-        }
-
-
-        if (
-            error.code ===
-            "auth/id-token-expired"
-        ) {
-
-            return res.status(401).json({
-                success: false,
-                message:
-                    "Login session expired. Please login again."
-            });
-
-        }
-
-
-        return res.status(401).json({
-            success: false,
-            message:
-                "Invalid or expired login"
-        });
+        return sendAuthenticationError(res, error);
 
     }
 
@@ -117,5 +130,6 @@ function requireAdmin(req, res, next) {
 
 module.exports = {
     requireAuth,
-    requireAdmin
+    requireAdmin,
+    optionalAuth
 };
