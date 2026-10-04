@@ -149,7 +149,7 @@ async function checkAccountAccess(user) {
     }
 
     if (response.status === 403) {
-        window.location.replace("user-dashboard.html");
+        window.location.replace("index.html");
         return;
     }
 
